@@ -1,0 +1,25 @@
+{
+  "name": "daycare",
+  "version": "1.0.0",
+  "description": "Displays info of students",
+  "main": "app.js",
+  "dependencies": {
+    "consolidate": "^0.14.1",
+    "express": "^4.14.0",
+    "nunjucks": "^2.5.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/timtouch/CECS343-Day-Care.git"
+  },
+  "author": "Tim, Dennis, Alex",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/timtouch/CECS343-Day-Care/issues"
+  },
+  "homepage": "https://github.com/timtouch/CECS343-Day-Care#readme"
+}
