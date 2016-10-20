@@ -1,4 +1,4 @@
-# CECS343 Day- are
+# CECS343 Day Care
 
 # California State University, Long Beach
 # Fall 2016
