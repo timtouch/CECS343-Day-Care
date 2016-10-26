@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 
 var studentSchema = {
+  _id: { type: Number, required: true },
   firstName: { type: String, required: true},
   lastName: { type: String, required: true},
   phone: { type: Number, required: true},
@@ -12,7 +13,8 @@ var studentSchema = {
       medicalAdminPermission: { type: Boolean, required: true }
   },
   emergencyContact: {
-    emName: { type: String, required: true },
+    emFirstName: { type: String, required: true },
+    emLastName: { type: String, required: true },
     emPhone: { type: Number, required: true },
     relationship: { type: String, required: true}
   },

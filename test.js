@@ -37,7 +37,8 @@ describe('Student API', function() {
   it('can load a student by firstName', function(done){
     //Create a single student
     Student.create({
-      firstName: "Frank",
+      _id: 1,
+      firstName: "John",
       lastName: "Sinatra",
       phone: 1203942345,
       status: "Currently Enrolled",
@@ -47,7 +48,8 @@ describe('Student API', function() {
         medicalAdminPermission: true
       },
       emergencyContact: {
-        emName: "George Costanza",
+        emFirstName: "George",
+        emLastName: "Costanza",
         emPhone: 9384930298,
         relationship: "Uncle"
       },
@@ -55,7 +57,7 @@ describe('Student API', function() {
         {
           firstName: "Granny",
           lastName: "Sinatra",
-          relationship: "Granny",
+          relationship: "Grandma",
           codeword: "High Horse Away"
         },
         {
@@ -67,21 +69,21 @@ describe('Student API', function() {
       ]
     }, function(error, doc){
       assert.ifError(error);
-      var url = URL_ROOT + '/student/firstName/Frank';
-      // Make an HTTP requires to localhost:3000/student/firstName/Frank
+      var url = URL_ROOT + '/student/firstName/John';
+      // Make an HTTP requires to localhost:3000/student/firstName/John
       superagent.get(url, function(error, res){
         assert.ifError(error);
         var result;
-        // Make sure we got { firstName: 'Frank'} back
+        // Make sure we got { firstName: 'John'} back
         assert.doesNotThrow(function(){
           result = JSON.parse(res.text);
         });
         assert.ok(result.student);
-        assert.equal(result.student.firstName, 'Frank');
+        assert.equal(result.student.firstName, 'John');
         done();
       });
     });
 
   });
-  
+
 });
