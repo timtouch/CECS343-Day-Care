@@ -8,6 +8,7 @@
     "express": "^4.14.0",
     "http-status": "^0.2.3",
     "mongoose": "^4.6.5",
+    "morgan": "^1.7.0",
     "nunjucks": "^2.5.2",
     "underscore": "^1.8.3",
     "wagner-core": "^0.2.0"

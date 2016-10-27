@@ -37,7 +37,6 @@ describe('Student API', function() {
   it('can load a student by firstName', function(done){
     //Create a single student
     Student.create({
-      _id: 1,
       firstName: "John",
       lastName: "Sinatra",
       phone: 1203942345,
