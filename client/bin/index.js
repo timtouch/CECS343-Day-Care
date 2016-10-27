@@ -1,9 +1,13 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 exports.StudentInfoController = function($scope, $routeParams, $http) {
-  var encoded = encodeURIComponent($routeParams.name);
+  var name = $routeParams.name;
+
+  console.log("NAME: " + name);
+  console.log($routeParams);
+
   //Make api request with info
   $http.
-    get('/api/v1/student/firstName/' + encoded).
+    get('/api/v1/student/firstName/' + name).
     success(function(data) {
         $scope.student = data.student;
     });
@@ -17,7 +21,7 @@ exports.StudentInfoController = function($scope, $routeParams, $http) {
 exports.studentInfo = function() {
   return {
     controller: "StudentInfoController",
-    templateUrl: "/client/templates/student_info.html"
+    templateUrl: "/templates/student_info.html"
   }
 };
 
@@ -41,8 +45,8 @@ var app = angular.module('day-care', ['day-care.components', 'ngRoute']);
 app.config(function($routeProvider) {
   $routeProvider.
     when('/student/:name', {
-      templateUrl: '/client/templates/student_info.html'
-    })
+      templateUrl: '/templates/student_info.html'
+    });
 });
 
 },{"./controllers":1,"./directives":2,"underscore":4}],4:[function(require,module,exports){
@@ -1595,4 +1599,4 @@ app.config(function($routeProvider) {
   }
 }.call(this));
 
-},{}]},{},[3]);
+},{}]},{},[3])

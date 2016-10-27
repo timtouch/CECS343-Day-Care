@@ -17,6 +17,6 @@ var app = angular.module('day-care', ['day-care.components', 'ngRoute']);
 app.config(function($routeProvider) {
   $routeProvider.
     when('/student/:name', {
-      templateUrl: '/client/templates/student_info.html'
+      templateUrl: '/templates/student_info.html'
     });
 });
