@@ -17,11 +17,25 @@ exports.StudentInfoController = function($scope, $routeParams, $http) {
   }, 0);
 };
 
+exports.NavBarController = function($scope) {
+
+  setTimeout(function() {
+    $scope.$emit('NavBarController');
+  }, 0);
+};
+
 },{}],2:[function(require,module,exports){
 exports.studentInfo = function() {
   return {
     controller: "StudentInfoController",
     templateUrl: "/templates/student_info.html"
+  }
+};
+
+exports.navBar = function() {
+  return {
+    controller: "NavBarController",
+    templateUrl: "/templates/nav_bar.html"
   }
 };
 

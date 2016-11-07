@@ -15,3 +15,10 @@ exports.StudentInfoController = function($scope, $routeParams, $http) {
     $scope.$emit('StudentInfoController');
   }, 0);
 };
+
+exports.NavBarController = function($scope) {
+
+  setTimeout(function() {
+    $scope.$emit('NavBarController');
+  }, 0);
+};
