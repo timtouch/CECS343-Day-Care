@@ -19,5 +19,9 @@ app.config(function($routeProvider) {
     when('/student/:name', {
       templateUrl: '/templates/student_info.html',
       controller: 'StudentInfoController'
+    }).
+    when('/student', {
+      templateUrl: '/templates/attendence_sheet.html',
+      controller: 'AttendenceSheetController'
     });
 });

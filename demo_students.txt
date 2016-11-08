@@ -1,0 +1,95 @@
+{
+  firstName: "John",
+  lastName: "Sinatra",
+  phone: 1203942345,
+  status: "Currently Enrolled",
+  medicalInfo: {
+    foodAllergies: ["Seafood", "Nuts"],
+    medicalAllergies: ["Penicillin", "Cough Drops"],
+    medicalAdminPermission: true
+  },
+  emergencyContact: {
+    emFirstName: "George",
+    emLastName: "Costanza",
+    emPhone: 9384930298,
+    relationship: "Uncle"
+  },
+  guardians: [
+    {
+      firstName: "Granny",
+      lastName: "Sinatra",
+      relationship: "Grandma",
+      codeword: "High Horse Away"
+    },
+    {
+      firstName: "Hailey",
+      lastName: "Sinatra",
+      relationship: "Mother",
+      codeword: "Moonlight Serenade"
+    }
+  ]
+}
+
+{
+  firstName: "Amy",
+  lastName: "Garfield",
+  phone: 3235460989,
+  status: "Currently Enrolled",
+  medicalInfo: {
+    foodAllergies: ["Nuts"],
+    medicalAllergies: [],
+    medicalAdminPermission: true
+  },
+  emergencyContact: {
+    emFirstName: "Harry",
+    emLastName: "Rodriguez",
+    emPhone: 3452345678,
+    relationship: "Uncle"
+  },
+  guardians: [
+    {
+      firstName: "Joel",
+      lastName: "Garfield",
+      relationship: "Father",
+      codeword: "Grey Jackal Stripes"
+    },
+    {
+      firstName: "Barbara",
+      lastName: "Garfield",
+      relationship: "Mother",
+      codeword: "Maniac Molten Mondays"
+    }
+  ]
+}
+
+{
+  firstName: "Emily",
+  lastName: "Jules",
+  phone: 9083942348,
+  status: "Currently Enrolled",
+  medicalInfo: {
+    foodAllergies: ["Water"],
+    medicalAllergies: [],
+    medicalAdminPermission: true
+  },
+  emergencyContact: {
+    emFirstName: "Jackie",
+    emLastName: "Kindlewood",
+    emPhone: 9320491483,
+    relationship: "Aunt"
+  },
+  guardians: [
+    {
+      firstName: "Kirk",
+      lastName: "Jules",
+      relationship: "Father",
+      codeword: "Powered Elephant Shoes"
+    },
+    {
+      firstName: "Whitney",
+      lastName: "Jules",
+      relationship: "Mother",
+      codeword: "Handsome Jumping Raccoons"
+    }
+  ]
+}

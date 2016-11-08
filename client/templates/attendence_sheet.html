@@ -1,0 +1,19 @@
+<div class="attendence-sheet">
+  <div ng-repeat="student in students">
+    <div>
+      <p>First Name: {{student.firstName}}</p>
+      <p>Last Name: {{student.lastName}}</p>
+      <p>Phone: {{student.phone}}</p>
+      <p>Status: {{student.status}}</p>
+      <p>Guardians:</p>
+      <ul>
+        <li ng-repeat="guardian in student.guardians">
+          <p>First Name: {{guardian.firstName}}</p>
+          <p>Last Name: {{guardian.lastName}}</p>
+          <p>Relationship: {{guardian.relationship}}</p>
+          <p>Codeword: {{guardian.codeword}}</p>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

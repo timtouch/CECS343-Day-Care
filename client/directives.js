@@ -11,3 +11,10 @@ exports.navBar = function() {
     templateUrl: "/templates/nav_bar.html"
   }
 };
+
+exports.attendenceSheet = function() {
+  return {
+    controller: "AttendenceSheetController",
+    templateUrl: "/templates/attendence_sheet.html"
+  }
+};

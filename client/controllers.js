@@ -1,14 +1,11 @@
 exports.StudentInfoController = function($scope, $routeParams, $http) {
   var name = $routeParams.name;
 
-  console.log("NAME: " + name);
-  console.log($routeParams);
-
   //Make api request with info
   $http.
     get('/api/v1/student/firstName/' + name).
     success(function(data) {
-        $scope.student = data.student;
+      $scope.student = data.student;
     });
 
   setTimeout(function() {
@@ -21,4 +18,18 @@ exports.NavBarController = function($scope) {
   setTimeout(function() {
     $scope.$emit('NavBarController');
   }, 0);
+};
+
+exports.AttendenceSheetController = function($scope, $http) {
+
+  $http.
+    get('/api/v1/student').
+    success(function(data) {
+      $scope.students = data.students;
+    });
+
+  setTimeout(function() {
+    $scope.$emit('AttendenceSheetController');
+  }, 0);
+
 };

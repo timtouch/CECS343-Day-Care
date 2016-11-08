@@ -2,14 +2,11 @@
 exports.StudentInfoController = function($scope, $routeParams, $http) {
   var name = $routeParams.name;
 
-  console.log("NAME: " + name);
-  console.log($routeParams);
-
   //Make api request with info
   $http.
     get('/api/v1/student/firstName/' + name).
     success(function(data) {
-        $scope.student = data.student;
+      $scope.student = data.student;
     });
 
   setTimeout(function() {
@@ -24,6 +21,20 @@ exports.NavBarController = function($scope) {
   }, 0);
 };
 
+exports.AttendenceSheetController = function($scope, $http) {
+
+  $http.
+    get('/api/v1/student').
+    success(function(data) {
+      $scope.students = data.students;
+    });
+
+  setTimeout(function() {
+    $scope.$emit('AttendenceSheetController');
+  }, 0);
+
+};
+
 },{}],2:[function(require,module,exports){
 exports.studentInfo = function() {
   return {
@@ -36,6 +47,13 @@ exports.navBar = function() {
   return {
     controller: "NavBarController",
     templateUrl: "/templates/nav_bar.html"
+  }
+};
+
+exports.attendenceSheet = function() {
+  return {
+    controller: "AttendenceSheetController",
+    templateUrl: "/templates/attendence_sheet.html"
   }
 };
 
@@ -61,6 +79,10 @@ app.config(function($routeProvider) {
     when('/student/:name', {
       templateUrl: '/templates/student_info.html',
       controller: 'StudentInfoController'
+    }).
+    when('/student', {
+      templateUrl: '/templates/attendence_sheet.html',
+      controller: 'AttendenceSheetController'
     });
 });
 
