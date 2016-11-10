@@ -20,8 +20,12 @@ app.config(function($routeProvider) {
       templateUrl: '/templates/student_info.html',
       controller: 'StudentInfoController'
     }).
-    when('/student', {
+    when('/attendence_sheet', {
       templateUrl: '/templates/attendence_sheet.html',
       controller: 'AttendenceSheetController'
+    }).
+    when('/students', {
+      templateUrl: '/templates/students.html',
+      controller: 'StudentsController'
     });
 });

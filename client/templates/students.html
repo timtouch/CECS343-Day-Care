@@ -1,0 +1,24 @@
+<div class="attendence-sheet">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Last Name</th>
+        <th>First Name</th>
+        <th>Food Allergies</th>
+        <th>Medical Allergies</th>
+        <th>Medical Needs</th>
+        <th>Emergency Contact</th>
+        <th>Relationship</th>
+      </tr>
+      <tbody ng-repeat="student in students">
+          <td><a ng-href="#/student/{{student.firstName}}">{{student.lastName}}</a></td>
+          <td>{{student.firstName}}</td>
+          <td><p ng-repeat="foodAllergy in student.medicalInfo.foodAllergies">{{foodAllergy}}<p></td>
+          <td><p ng-repeat="medicalAllergy in student.medicalInfo.medicalAllergies">{{medicalAllergy}}<p></td>
+          <td>{{student.medicalInfo.medicalNeeds}}</td>
+          <td>{{student.emergencyContact.emPhone}}</td>
+          <td>{{student.emergencyContact.relationship}}</td>
+      </tbody>
+    </thead>
+  </table>
+</div>

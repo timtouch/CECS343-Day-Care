@@ -33,3 +33,17 @@ exports.AttendenceSheetController = function($scope, $http) {
   }, 0);
 
 };
+
+exports.StudentsController = function ( $scope, $http ) {
+
+  $http.
+    get('/api/v1/student').
+    success(function(data) {
+      $scope.students = data.students;
+    });
+
+  setTimeout(function() {
+    $scope.$emit('AttendenceSheetController');
+  }, 0);
+
+};

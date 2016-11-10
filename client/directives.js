@@ -18,3 +18,10 @@ exports.attendenceSheet = function() {
     templateUrl: "/templates/attendence_sheet.html"
   }
 };
+
+exports.students = function() {
+  return {
+    controller: "StudentsController",
+    templateUrl: "/templates/students.html"
+  }
+};

@@ -35,6 +35,20 @@ exports.AttendenceSheetController = function($scope, $http) {
 
 };
 
+exports.StudentsController = function ( $scope, $http ) {
+
+  $http.
+    get('/api/v1/student').
+    success(function(data) {
+      $scope.students = data.students;
+    });
+
+  setTimeout(function() {
+    $scope.$emit('AttendenceSheetController');
+  }, 0);
+
+};
+
 },{}],2:[function(require,module,exports){
 exports.studentInfo = function() {
   return {
@@ -54,6 +68,13 @@ exports.attendenceSheet = function() {
   return {
     controller: "AttendenceSheetController",
     templateUrl: "/templates/attendence_sheet.html"
+  }
+};
+
+exports.students = function() {
+  return {
+    controller: "StudentsController",
+    templateUrl: "/templates/students.html"
   }
 };
 
@@ -80,9 +101,13 @@ app.config(function($routeProvider) {
       templateUrl: '/templates/student_info.html',
       controller: 'StudentInfoController'
     }).
-    when('/student', {
+    when('/attendence_sheet', {
       templateUrl: '/templates/attendence_sheet.html',
       controller: 'AttendenceSheetController'
+    }).
+    when('/students', {
+      templateUrl: '/templates/students.html',
+      controller: 'StudentsController'
     });
 });
 
