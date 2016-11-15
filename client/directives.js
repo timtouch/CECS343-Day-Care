@@ -25,3 +25,10 @@ exports.students = function() {
     templateUrl: "/templates/students.html"
   }
 };
+
+exports.pickupDropoff = function() {
+  return {
+    controller: "PickupDropoffController",
+    templateUrl: "/templates/pickup_dropoff.html"
+  }
+};

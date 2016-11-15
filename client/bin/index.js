@@ -49,6 +49,20 @@ exports.StudentsController = function ( $scope, $http ) {
 
 };
 
+exports.PickupDropoffController = function($scope, $http) {
+
+  $http.
+    get('/api/v1/student').
+    success(function(data) {
+      $scope.students = data.students;
+    });
+
+  setTimeout(function() {
+    $scope.$emit('PickupDropoffController');
+  }, 0);
+
+};
+
 },{}],2:[function(require,module,exports){
 exports.studentInfo = function() {
   return {
@@ -75,6 +89,13 @@ exports.students = function() {
   return {
     controller: "StudentsController",
     templateUrl: "/templates/students.html"
+  }
+};
+
+exports.pickupDropoff = function() {
+  return {
+    controller: "PickupDropoffController",
+    templateUrl: "/templates/pickup_dropoff.html"
   }
 };
 
@@ -108,6 +129,10 @@ app.config(function($routeProvider) {
     when('/students', {
       templateUrl: '/templates/students.html',
       controller: 'StudentsController'
+    }).
+    when('/pickup_dropoff', {
+      templateUrl: '/templates/pickup_dropoff.html',
+      controller: 'PickupDropoffController'
     });
 });
 

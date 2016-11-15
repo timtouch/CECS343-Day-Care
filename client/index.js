@@ -27,5 +27,9 @@ app.config(function($routeProvider) {
     when('/students', {
       templateUrl: '/templates/students.html',
       controller: 'StudentsController'
+    }).
+    when('/pickup_dropoff', {
+      templateUrl: '/templates/pickup_dropoff.html',
+      controller: 'PickupDropoffController'
     });
 });

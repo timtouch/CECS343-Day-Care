@@ -1,0 +1,26 @@
+<div class="pickup-dropoff">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Last Name</th>
+        <th>First Name</th>
+        <th>Guardian 1</th>
+        <th>Codeword 1</th>
+        <th>Relationship</th>
+        <th>Guardian 2</th>
+        <th>Codeword 2</th>
+        <th>Relationship</th>
+      </tr>
+    </thead>
+    <tbody ng-repeat="student in students">
+      <td>{{student.lastName}}</td>
+      <td>{{student.firstName}}</td>
+      <td>{{student.guardians[0].firstName}} {{student.guardians[0].lastName}}</td>
+      <td>{{student.guardians[0].codeword}}</td>
+      <td>{{student.guardians[0].relationship}}</td>
+      <td>{{student.guardians[1].firstName}} {{student.guardians[1].lastName}}</td>
+      <td>{{student.guardians[1].codeword}}</td>
+      <td>{{student.guardians[1].relationship}}</td>
+    </tbody>
+  </table>
+</div>
