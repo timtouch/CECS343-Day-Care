@@ -70,7 +70,7 @@ exports.NewStudentController = function($scope, $http) {
     guardians: []
   };
 
-  $scope.guardians = [];
+  $scope.guardians = [{},{}];
   $scope.foodAllergies = [''];
   $scope.medicalAllergies = [''];
 
@@ -86,10 +86,17 @@ exports.NewStudentController = function($scope, $http) {
     $scope.student.firstName = $scope.firstName;
     $scope.student.lastName = $scope.lastName;
     $scope.student.phoneNumber = $scope.phoneNumber;
+    $scope.student.status = "Currently Enrolled";
+    $scope.student.medicalInfo.foodAllergies = $scope.foodAllergies;
+    $scope.student.medicalInfo.medicalAllergies = $scope.medicalAllergies;
+    $scope.student.medicalInfo.medicalNeeds = $scope.medicalNeeds;
+    $scope.student.medicalInfo.medicalAdminPermission = $scope.medicalAdminPermission;
     $scope.student.emergencyContact.emFirstName = $scope.emFirstName;
     $scope.student.emergencyContact.emLastName = $scope.emLastName;
     $scope.student.emergencyContact.emPhone = $scope.emPhone;
     $scope.student.emergencyContact.relationship = $scope.emRelationship;
+    $scope.student.guardians = $scope.guardians;
+
 
     console.log($scope.student);
 
