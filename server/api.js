@@ -41,6 +41,13 @@ module.exports = function(wagner){
       });
     };
   }));
-
+  /*
+  //TODO: Allow users to add new students
+  api.post('/student', wagner.invoke(function(Student){
+    return function (req, res) {
+      Student.create
+    }
+  }));
+  */
   return api;
 };

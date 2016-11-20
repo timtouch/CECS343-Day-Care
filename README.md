@@ -12,3 +12,5 @@
 ### Useful commands
 * **./node_modules/.bin/gulp watch**
   * Use before editing files in the client folder to keep the index.js updated
+* **mongo ds155727.mlab.com:55727/daycaredb -u timtouch -p KidsInTheCrib**
+  * For accessing the remote DB

@@ -35,38 +35,42 @@ describe('Student API', function() {
   });
 
   it('can load a student by firstName', function(done){
-    //Create a single student
-    Student.create({
-      firstName: "John",
-      lastName: "Sinatra",
-      phone: 1203942345,
-      status: "Currently Enrolled",
-      medicalInfo: {
-        foodAllergies: ["Seafood", "Nuts"],
-        medicalAllergies: ["Penicillin", "Cough Drops"],
-        medicalAdminPermission: true
-      },
-      emergencyContact: {
-        emFirstName: "George",
-        emLastName: "Costanza",
-        emPhone: 9384930298,
-        relationship: "Uncle"
-      },
-      guardians: [
-        {
-          firstName: "Granny",
-          lastName: "Sinatra",
-          relationship: "Grandma",
-          codeword: "High Horse Away"
+
+    var student = new Student(
+      {
+        firstName: "John",
+        lastName: "Sinatra",
+        phone: 1203942345,
+        status: "Currently Enrolled",
+        medicalInfo: {
+          foodAllergies: ["Seafood", "Nuts"],
+          medicalAllergies: ["Penicillin", "Cough Drops"],
+          medicalAdminPermission: true
         },
-        {
-          firstName: "Hailey",
-          lastName: "Sinatra",
-          relationship: "Mother",
-          codeword: "Moonlight Serenade"
-        }
-      ]
-    }, function(error, doc){
+        emergencyContact: {
+          emFirstName: "George",
+          emLastName: "Costanza",
+          emPhone: 9384930298,
+          relationship: "Uncle"
+        },
+        guardians: [
+          {
+            firstName: "Granny",
+            lastName: "Sinatra",
+            relationship: "Grandma",
+            codeword: "High Horse Away"
+          },
+          {
+            firstName: "Hailey",
+            lastName: "Sinatra",
+            relationship: "Mother",
+            codeword: "Moonlight Serenade"
+          }
+        ]
+      }
+    );
+    //Create a single student
+    student.save(function(error, doc){
       assert.ifError(error);
       var url = URL_ROOT + '/student/firstName/John';
       // Make an HTTP requires to localhost:3000/student/firstName/John

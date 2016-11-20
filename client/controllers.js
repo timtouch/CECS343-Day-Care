@@ -61,3 +61,39 @@ exports.PickupDropoffController = function($scope, $http) {
   }, 0);
 
 };
+
+exports.NewStudentController = function($scope, $http) {
+  $scope.student = {
+    medicalInfo: {},
+    emergencyContact:{},
+    guardians: []
+  };
+
+  $scope.guardians = [];
+  $scope.foodAllergies = [''];
+  $scope.medicalAllergies = [''];
+
+  $scope.addOption = function(option) {
+    option.push('');
+  }
+
+  $scope.removeOption = function(option){
+    option.pop();
+  }
+
+  $scope.addStudent = function() {
+    $scope.student.firstName = $scope.firstName;
+    $scope.student.lastName = $scope.lastName;
+    $scope.student.phoneNumber = $scope.phoneNumber;
+    $scope.student.emergencyContact.emFirstName = $scope.emFirstName;
+    $scope.student.emergencyContact.emLastName = $scope.emLastName;
+    $scope.student.emergencyContact.emPhone = $scope.emPhone;
+    $scope.student.emergencyContact.relationship = $scope.emRelationship;
+
+    console.log($scope.student);
+
+    setTimeout(function() {
+      $scope.$emit('NewStudentController');
+    }, 0);
+  };
+};

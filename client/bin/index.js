@@ -63,6 +63,42 @@ exports.PickupDropoffController = function($scope, $http) {
 
 };
 
+exports.NewStudentController = function($scope, $http) {
+  $scope.student = {
+    medicalInfo: {},
+    emergencyContact:{},
+    guardians: []
+  };
+
+  $scope.guardians = [];
+  $scope.foodAllergies = [''];
+  $scope.medicalAllergies = [''];
+
+  $scope.addOption = function(option) {
+    option.push('');
+  }
+
+  $scope.removeOption = function(option){
+    option.pop();
+  }
+
+  $scope.addStudent = function() {
+    $scope.student.firstName = $scope.firstName;
+    $scope.student.lastName = $scope.lastName;
+    $scope.student.phoneNumber = $scope.phoneNumber;
+    $scope.student.emergencyContact.emFirstName = $scope.emFirstName;
+    $scope.student.emergencyContact.emLastName = $scope.emLastName;
+    $scope.student.emergencyContact.emPhone = $scope.emPhone;
+    $scope.student.emergencyContact.relationship = $scope.emRelationship;
+
+    console.log($scope.student);
+
+    setTimeout(function() {
+      $scope.$emit('NewStudentController');
+    }, 0);
+  };
+};
+
 },{}],2:[function(require,module,exports){
 exports.studentInfo = function() {
   return {
@@ -96,6 +132,13 @@ exports.pickupDropoff = function() {
   return {
     controller: "PickupDropoffController",
     templateUrl: "/templates/pickup_dropoff.html"
+  }
+};
+
+exports.newStudent = function() {
+  return {
+    controller: "NewStudentController",
+    templateUrl: "/templates/new_student.html"
   }
 };
 
@@ -133,6 +176,10 @@ app.config(function($routeProvider) {
     when('/pickup_dropoff', {
       templateUrl: '/templates/pickup_dropoff.html',
       controller: 'PickupDropoffController'
+    }).
+    when('/new_student', {
+      templateUrl: '/templates/new_student.html',
+      controller: 'NewStudentController'
     });
 });
 

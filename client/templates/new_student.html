@@ -1,0 +1,35 @@
+<div class="new-student">
+  <form name="createNewStudent" ng-submit="createNewStudent.$valid && addStudent()">
+    <div class="form-group">
+      <label for="student">Student</label>
+      <input type="text" class="form-control" placeholder="First Name" ng-model="firstName" required/>
+      <input type="text" class="form-control" placeholder="Last Name" ng-model="lastName" required/>
+      <input type="text" class="form-control"  placeholder="Phone Number" ng-model="phoneNumber" required/>
+
+      <label for="medicalInfo">Medical Information</label>
+      <div ng-repeat='foodAllergy in foodAllergies track by $index'>
+        <input type="text" class="form-control" placeholder="Food Allergy" ng-model="foodAllergies[$index]" required/>
+      </div>
+      <button class='addField' ng-click="addOption(medicalAllergies)">+</button>
+      <button class='removeField' ng-click="removeOption(medicalAllergies)">-</button>
+
+      <div ng-repeat='medicalAllergy in medicalAllergies track by $index'>
+        <input type="text" class="form-control" placeholder="Medical Allergy" ng-model="medicalAllergies[$index]" required/>
+      </div>
+      <button class='addField' ng-click="addOption(medicalAllergies)">+</button>
+      <button class='removeField' ng-click="removeOption(medicalAllergies)">-</button>
+
+      <input type="text" class="form-control" placeholder="Medical Needs" ng-model="medicalNeeds" required/>
+      <div>
+        Medical Administration Permission
+        <input type="checkbox" class="form-control" placeholder="Medical Admin Permission" ng-model="medicalAdminPermission" required/>
+      <div>
+        
+      <label for="emergencyContact">Emergency Contact</label>
+      <input type="text" class="form-control" placeholder="First Name" ng-model="emFirstName" required/>
+      <input type="text" class="form-control" placeholder="Last Name" ng-model="emLastName" required/>
+      <input type="text" class="form-control" placeholder="Phone Number" ng-model="emPhone" required/>
+      <input type="text" class="form-control" placeholder="Relationship" ng-model="emRelationship" required/>
+      <button type="submit" value="Submit">Add Student</button>
+  </form>
+</div>
