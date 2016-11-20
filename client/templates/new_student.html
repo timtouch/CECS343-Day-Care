@@ -1,6 +1,6 @@
 <div class="new-student">
-  <form name="createNewStudent" ng-submit="createNewStudent.$valid && addStudent()">
-    <div class="form-group inner-container">
+  <form class="form-horizontal" name="createNewStudent" ng-submit="createNewStudent.$valid && addStudent()">
+    <div class="form-group">
       <label for="student">Student</label>
       <input type="text" class="form-control" placeholder="First Name" ng-model="firstName" required/>
       <input type="text" class="form-control" placeholder="Last Name" ng-model="lastName" required/>
@@ -40,6 +40,6 @@
         <input type="text" class="form-control" placeholder="Codeword" ng-model="guardian.codeword" required/>
       </div>
 
-      <button type="submit" value="Submit">Add Student</button>
+      <button type="submit" class="btn btn-primary" value="Submit">Add Student</button>
   </form>
 </div>
