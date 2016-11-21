@@ -48,14 +48,12 @@ module.exports = function(wagner){
 
   //TODO: Allow users to add new students
   api.post('/student', wagner.invoke(function(Student){
-    return function (req, res) {
-      Student.create(req.body, function(err, student) {
-        if(err){
-          return res.
-            status(status.INTERNAL_SERVER_ERROR).
-            json({ error: error.toString() });
-        }
-        return res.json({ student: student });
+    return function (req, res, next) {
+
+      var student = new Student(req.body);
+      student.save(function(err, student){
+        if(err){ return next(err) }
+        res.json(201, student);
       });
     };
   }));

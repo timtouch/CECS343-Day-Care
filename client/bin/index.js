@@ -64,11 +64,13 @@ exports.PickupDropoffController = function($scope, $http) {
 };
 
 exports.NewStudentController = function($scope, $http) {
+
   $scope.student = {
     medicalInfo: {},
     emergencyContact:{},
     guardians: []
   };
+
 
   $scope.guardians = [{},{}];
   $scope.foodAllergies = [''];
@@ -83,9 +85,10 @@ exports.NewStudentController = function($scope, $http) {
   }
 
   $scope.addStudent = function() {
+
     $scope.student.firstName = $scope.firstName;
     $scope.student.lastName = $scope.lastName;
-    $scope.student.phoneNumber = $scope.phoneNumber;
+    $scope.student.phone = parseInt($scope.phoneNumber);
     $scope.student.status = "Currently Enrolled";
     $scope.student.medicalInfo.foodAllergies = $scope.foodAllergies;
     $scope.student.medicalInfo.medicalAllergies = $scope.medicalAllergies;
@@ -93,9 +96,10 @@ exports.NewStudentController = function($scope, $http) {
     $scope.student.medicalInfo.medicalAdminPermission = $scope.medicalAdminPermission;
     $scope.student.emergencyContact.emFirstName = $scope.emFirstName;
     $scope.student.emergencyContact.emLastName = $scope.emLastName;
-    $scope.student.emergencyContact.emPhone = $scope.emPhone;
+    $scope.student.emergencyContact.emPhone = parseInt($scope.emPhone);
     $scope.student.emergencyContact.relationship = $scope.emRelationship;
     $scope.student.guardians = $scope.guardians;
+
 
     $http.
       post('/api/v1/student', $scope.student).
@@ -103,7 +107,10 @@ exports.NewStudentController = function($scope, $http) {
         console.log("Successfully added" + addedStudent);
       });
 
+      console.log(JSON.stringify($scope.student, null, 2));
     };
+
+
 
   setTimeout(function() {
     $scope.$emit('NewStudentController');

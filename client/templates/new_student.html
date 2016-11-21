@@ -7,6 +7,7 @@
       <input type="text" class="form-control"  placeholder="Phone Number" ng-model="phoneNumber" required/>
 
       <label for="medicalInfo">Medical Information</label>
+      <!--Consider a mechanism to automatically increase field as they are filled-->
       <div ng-repeat='foodAllergy in foodAllergies track by $index'>
         <input type="text" class="form-control" placeholder="Food Allergy" ng-model="foodAllergies[$index]"/>
       </div>
@@ -19,7 +20,7 @@
       <button class='addField' ng-click="addOption(medicalAllergies)">+</button>
       <button class='removeField' ng-click="removeOption(medicalAllergies)">-</button>
 
-      <input type="text" class="form-control" placeholder="Medical Needs" ng-model="medicalNeeds" required/>
+      <input type="text" class="form-control" placeholder="Medical Needs" ng-model="medicalNeeds"/>
       <label>
         Medical Administration Permission
         <input type="checkbox" class="checkbox" ng-model="medicalAdminPermission" required/>
