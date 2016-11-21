@@ -4,6 +4,7 @@
   "description": "Displays info of students",
   "main": "server/index.js",
   "dependencies": {
+    "body-parser": "^1.15.2",
     "consolidate": "^0.14.1",
     "express": "^4.14.0",
     "http-status": "^0.2.3",
@@ -14,7 +15,7 @@
     "wagner-core": "^0.2.0"
   },
   "devDependencies": {
-  	"browserify": "^13.1.1",
+    "browserify": "^13.1.1",
     "gulp": "^3.9.1",
     "gulp-browserify": "^0.5.1",
     "mocha": "^3.1.2",

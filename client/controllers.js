@@ -96,11 +96,16 @@ exports.NewStudentController = function($scope, $http) {
     $scope.student.emergencyContact.relationship = $scope.emRelationship;
     $scope.student.guardians = $scope.guardians;
 
+    $http.
+      post('/api/v1/student', $scope.student).
+      success(function(addedStudent){
+        console.log("Successfully added" + addedStudent);
+      });
 
-    console.log($scope.student);
+    };
 
-    setTimeout(function() {
-      $scope.$emit('NewStudentController');
-    }, 0);
-  };
+  setTimeout(function() {
+    $scope.$emit('NewStudentController');
+  }, 0);
+
 };
