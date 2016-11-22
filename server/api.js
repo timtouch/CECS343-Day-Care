@@ -8,10 +8,10 @@ module.exports = function(wagner){
 
   api.use(bodyparser.json());
 
-  // Get a student given their first name
-  api.get('/student/firstName/:firstName', wagner.invoke(function(Student) {
+  // Get a student given their id
+  api.get('/student/:id', wagner.invoke(function(Student) {
     return function(req, res) {
-      Student.findOne({ firstName: req.params.firstName}, function( error, student ) {
+      Student.findOne({ _id: req.params.id}, function( error, student ) {
         if (error) {
           return res.
             status(status.INTERNAL_SERVER_ERROR).
@@ -46,7 +46,7 @@ module.exports = function(wagner){
     };
   }));
 
-  //TODO: Allow users to add new students
+  //Allow users to add new students
   api.post('/student', wagner.invoke(function(Student){
     return function (req, res, next) {
 
@@ -54,6 +54,16 @@ module.exports = function(wagner){
       student.save(function(err, student){
         if(err){ return next(err) }
         res.json(201, student);
+      });
+    };
+  }));
+  //Update student information
+  api.put('/student', wagner.invoke(function(Student){
+    return function (req, res, next) {
+      var student = req.body;
+      Student.update({ _id: student._id }, student, function( err, numAffected ){
+        if(err) { return next(err) }
+        res.send('Number affected: ' + numAffected);
       });
     };
   }));

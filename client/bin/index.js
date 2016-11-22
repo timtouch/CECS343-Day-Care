@@ -1,10 +1,10 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 exports.StudentInfoController = function($scope, $routeParams, $http) {
-  var name = $routeParams.name;
+  var id = $routeParams.id;
 
   //Make api request with info
   $http.
-    get('/api/v1/student/firstName/' + name).
+    get('/api/v1/student/' + id).
     success(function(data) {
       $scope.student = data.student;
     });
@@ -64,7 +64,7 @@ exports.PickupDropoffController = function($scope, $http) {
 };
 
 exports.NewStudentController = function($scope, $http) {
-
+  //Initialize models for saving input
   $scope.student = {
     medicalInfo: {},
     emergencyContact:{},
@@ -84,6 +84,7 @@ exports.NewStudentController = function($scope, $http) {
     option.pop();
   }
 
+  //Adds student to database
   $scope.addStudent = function() {
 
     $scope.student.firstName = $scope.firstName;
@@ -100,7 +101,6 @@ exports.NewStudentController = function($scope, $http) {
     $scope.student.emergencyContact.relationship = $scope.emRelationship;
     $scope.student.guardians = $scope.guardians;
 
-
     $http.
       post('/api/v1/student', $scope.student).
       success(function(addedStudent){
@@ -110,12 +110,39 @@ exports.NewStudentController = function($scope, $http) {
       console.log(JSON.stringify($scope.student, null, 2));
     };
 
-
-
   setTimeout(function() {
     $scope.$emit('NewStudentController');
   }, 0);
 
+};
+
+exports.EditStudentController = function($scope, $routeParams, $http){
+  var studentid = $routeParams.id;
+  $http.
+    get('/api/v1/student/' + studentid).
+    success(function(data){
+      $scope.student = data.student;
+  });
+
+  $scope.addOption = function(option) {
+    option.push('');
+  };
+
+  $scope.removeOption = function(option){
+    option.pop();
+  };
+
+  $scope.updateStudent = function() {
+    $http.
+    put('/api/v1/student', $scope.student).
+    success(function(student){
+      console.log("Successfully edited" + student);
+    });
+  };
+  
+  setTimeout(function() {
+    $scope.$emit('EditStudentController');
+  }, 0);
 };
 
 },{}],2:[function(require,module,exports){
@@ -161,6 +188,13 @@ exports.newStudent = function() {
   }
 };
 
+exports.editStudent = function() {
+  return {
+    controller: "EditStudentController",
+    templateUrl: "/templates/edit_student.html"
+  }
+}
+
 },{}],3:[function(require,module,exports){
 var controllers = require('./controllers');
 var directives = require('./directives');
@@ -180,7 +214,7 @@ var app = angular.module('day-care', ['day-care.components', 'ngRoute']);
 
 app.config(function($routeProvider) {
   $routeProvider.
-    when('/student/:name', {
+    when('/student/:id', {
       templateUrl: '/templates/student_info.html',
       controller: 'StudentInfoController'
     }).
@@ -199,6 +233,10 @@ app.config(function($routeProvider) {
     when('/new_student', {
       templateUrl: '/templates/new_student.html',
       controller: 'NewStudentController'
+    }).
+    when('/edit_student/:id', {
+        templateUrl: '/templates/edit_student.html',
+        controller: 'EditStudentController'
     });
 });
 

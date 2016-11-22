@@ -16,7 +16,7 @@ var app = angular.module('day-care', ['day-care.components', 'ngRoute']);
 
 app.config(function($routeProvider) {
   $routeProvider.
-    when('/student/:name', {
+    when('/student/:id', {
       templateUrl: '/templates/student_info.html',
       controller: 'StudentInfoController'
     }).
@@ -35,5 +35,9 @@ app.config(function($routeProvider) {
     when('/new_student', {
       templateUrl: '/templates/new_student.html',
       controller: 'NewStudentController'
+    }).
+    when('/edit_student/:id', {
+        templateUrl: '/templates/edit_student.html',
+        controller: 'EditStudentController'
     });
 });

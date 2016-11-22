@@ -1,0 +1,49 @@
+<div class="edit-student">
+  <form class="form-horizontal" name="editStudent" ng-submit="editStudent.$valid && updateStudent()">
+    <div class="form-group">
+      <label for="student">Student</label>
+      <input type="text" class="form-control" placeholder="First Name" ng-model="student.firstName" required/>
+      <input type="text" class="form-control" placeholder="Last Name" ng-model="student.lastName" required/>
+      <!--TODO: Input validation for phone numbers. Phone numbers must be saved as 10 digits and no other characters-->
+      <input type="text" class="form-control"  placeholder="Phone Number" ng-model="student.phone" required/>
+
+      <label for="medicalInfo">Medical Information</label>
+      <!--Consider a mechanism to automatically increase field as they are filled-->
+      <div ng-repeat='foodAllergy in student.medicalInfo.foodAllergies track by $index'>
+        <input type="text" class="form-control" placeholder="Food Allergy" ng-model="student.medicalInfo.foodAllergies[$index]"/>
+      </div>
+      <button class='addField' ng-click="addOption(student.medicalInfo.foodAllergies)">+</button>
+      <button class='removeField' ng-click="removeOption(student.medicalInfo.foodAllergies)">-</button>
+
+      <div ng-repeat='medicalAllergy in student.medicalInfo.medicalAllergies track by $index'>
+        <input type="text" class="form-control" placeholder="Medical Allergy" ng-model="student.medicalInfo.medicalAllergies[$index]"/>
+      </div>
+      <button class='addField' ng-click="addOption(student.medicalInfo.medicalAllergies)">+</button>
+      <button class='removeField' ng-click="removeOption(student.medicalInfo.medicalAllergies)">-</button>
+
+      <input type="text" class="form-control" placeholder="Medical Needs" ng-model="student.medicalInfo.medicalNeeds"/>
+
+      <label for="medicalAdminPermission">
+
+        Medical Administration Permission
+      </label>
+      <input type="checkbox" class="checkbox" ng-model="student.medicalInfo.medicalAdminPermission" required/>
+
+      <label for="emergencyContact">Emergency Contact</label>
+      <input type="text" class="form-control" placeholder="First Name" ng-model="student.emergencyContact.emFirstName" required/>
+      <input type="text" class="form-control" placeholder="Last Name" ng-model="student.emergencyContact.emLastName" required/>
+      <input type="text" class="form-control" placeholder="Phone Number" ng-model="student.emergencyContact.emPhone" required/>
+      <input type="text" class="form-control" placeholder="Relationship" ng-model="student.emergencyContact.relationship" required/>
+
+      <label for="guardians">Guardians</label>
+      <div ng-repeat="guardian in student.guardians track by $index">
+        Guardian {{$index + 1}}
+        <input type="text" class="form-control" placeholder="First Name" ng-model="guardian.firstName" required/>
+        <input type="text" class="form-control" placeholder="Last Name" ng-model="guardian.lastName" required/>
+        <input type="text" class="form-control" placeholder="Relationship" ng-model="guardian.relationship" required/>
+        <input type="text" class="form-control" placeholder="Codeword" ng-model="guardian.codeword" required/>
+      </div>
+
+      <button type="submit" class="btn btn-primary" value="Submit">Save</button>
+  </form>
+</div>

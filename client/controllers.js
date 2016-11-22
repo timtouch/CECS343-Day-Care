@@ -1,9 +1,9 @@
 exports.StudentInfoController = function($scope, $routeParams, $http) {
-  var name = $routeParams.name;
+  var id = $routeParams.id;
 
   //Make api request with info
   $http.
-    get('/api/v1/student/firstName/' + name).
+    get('/api/v1/student/' + id).
     success(function(data) {
       $scope.student = data.student;
     });
@@ -63,7 +63,7 @@ exports.PickupDropoffController = function($scope, $http) {
 };
 
 exports.NewStudentController = function($scope, $http) {
-
+  //Initialize models for saving input
   $scope.student = {
     medicalInfo: {},
     emergencyContact:{},
@@ -83,6 +83,7 @@ exports.NewStudentController = function($scope, $http) {
     option.pop();
   }
 
+  //Adds student to database
   $scope.addStudent = function() {
 
     $scope.student.firstName = $scope.firstName;
@@ -99,7 +100,6 @@ exports.NewStudentController = function($scope, $http) {
     $scope.student.emergencyContact.relationship = $scope.emRelationship;
     $scope.student.guardians = $scope.guardians;
 
-
     $http.
       post('/api/v1/student', $scope.student).
       success(function(addedStudent){
@@ -109,10 +109,37 @@ exports.NewStudentController = function($scope, $http) {
       console.log(JSON.stringify($scope.student, null, 2));
     };
 
-
-
   setTimeout(function() {
     $scope.$emit('NewStudentController');
   }, 0);
 
+};
+
+exports.EditStudentController = function($scope, $routeParams, $http){
+  var studentid = $routeParams.id;
+  $http.
+    get('/api/v1/student/' + studentid).
+    success(function(data){
+      $scope.student = data.student;
+  });
+
+  $scope.addOption = function(option) {
+    option.push('');
+  };
+
+  $scope.removeOption = function(option){
+    option.pop();
+  };
+
+  $scope.updateStudent = function() {
+    $http.
+    put('/api/v1/student', $scope.student).
+    success(function(student){
+      console.log("Successfully edited" + student);
+    });
+  };
+  
+  setTimeout(function() {
+    $scope.$emit('EditStudentController');
+  }, 0);
 };

@@ -39,3 +39,10 @@ exports.newStudent = function() {
     templateUrl: "/templates/new_student.html"
   }
 };
+
+exports.editStudent = function() {
+  return {
+    controller: "EditStudentController",
+    templateUrl: "/templates/edit_student.html"
+  }
+}

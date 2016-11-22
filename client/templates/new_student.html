@@ -4,6 +4,7 @@
       <label for="student">Student</label>
       <input type="text" class="form-control" placeholder="First Name" ng-model="firstName" required/>
       <input type="text" class="form-control" placeholder="Last Name" ng-model="lastName" required/>
+      <!--TODO: Input validation for phone numbers. Phone numbers must be saved as 10 digits and no other characters-->
       <input type="text" class="form-control"  placeholder="Phone Number" ng-model="phoneNumber" required/>
 
       <label for="medicalInfo">Medical Information</label>
@@ -21,10 +22,12 @@
       <button class='removeField' ng-click="removeOption(medicalAllergies)">-</button>
 
       <input type="text" class="form-control" placeholder="Medical Needs" ng-model="medicalNeeds"/>
-      <label>
+
+      <label for="medicalAdminPermission">
+
         Medical Administration Permission
-        <input type="checkbox" class="checkbox" ng-model="medicalAdminPermission" required/>
       </label>
+      <input type="checkbox" class="checkbox" ng-model="medicalAdminPermission" required/>
 
       <label for="emergencyContact">Emergency Contact</label>
       <input type="text" class="form-control" placeholder="First Name" ng-model="emFirstName" required/>
