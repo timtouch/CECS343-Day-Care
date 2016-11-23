@@ -1,4 +1,4 @@
-exports.StudentInfoController = function($scope, $routeParams, $http) {
+exports.StudentInfoController = function($scope, $routeParams, $http, $mdDialog, $location) {
   var id = $routeParams.id;
 
   //Make api request with info
@@ -6,7 +6,26 @@ exports.StudentInfoController = function($scope, $routeParams, $http) {
     get('/api/v1/student/' + id).
     success(function(data) {
       $scope.student = data.student;
-    });
+  });
+  $scope.showConfirm = function(ev) {
+    var confirm = $mdDialog.confirm()
+      .title('Do you want to DELETE this student?')
+      .textContent('This will permanently delete the student')
+      .ariaLabel('Lucky day')
+      .targetEvent(ev)
+      .ok('Yes please!')
+      .cancel('No thanks!');
+
+      //Deletes student if confirmed, otherwise do nothing
+      $mdDialog.show(confirm).then(function() {
+        $http.
+          delete('/api/v1/student/' + id).
+          success(function(data) {
+            console.log(data);
+          });
+        $location.url('/students');
+      }, function() {});
+  };
 
   setTimeout(function() {
     $scope.$emit('StudentInfoController');
@@ -62,7 +81,7 @@ exports.PickupDropoffController = function($scope, $http) {
 
 };
 
-exports.NewStudentController = function($scope, $http) {
+exports.NewStudentController = function($scope, $http, $location) {
   //Initialize models for saving input
   $scope.student = {
     medicalInfo: {},
@@ -105,8 +124,7 @@ exports.NewStudentController = function($scope, $http) {
       success(function(addedStudent){
         console.log("Successfully added" + addedStudent);
       });
-
-      console.log(JSON.stringify($scope.student, null, 2));
+      $location.url('/students');
     };
 
   setTimeout(function() {
@@ -115,7 +133,7 @@ exports.NewStudentController = function($scope, $http) {
 
 };
 
-exports.EditStudentController = function($scope, $routeParams, $http){
+exports.EditStudentController = function($scope, $routeParams, $http, $location){
   var studentid = $routeParams.id;
   $http.
     get('/api/v1/student/' + studentid).
@@ -137,8 +155,10 @@ exports.EditStudentController = function($scope, $routeParams, $http){
     success(function(student){
       console.log("Successfully edited" + student);
     });
+
+    $location.url('/students');
   };
-  
+
   setTimeout(function() {
     $scope.$emit('EditStudentController');
   }, 0);

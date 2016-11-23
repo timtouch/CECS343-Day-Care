@@ -68,5 +68,18 @@ module.exports = function(wagner){
     };
   }));
 
+  api.delete('/student/:id', wagner.invoke(function(Student){
+    return function (req, res, next) {
+      Student.remove( { _id: req.params.id } , function(err){
+        if(err) {
+          return next(err)
+        }
+        else {
+          res.send("Successfully deleted");
+        }
+      });
+    };
+  }));
+
   return api;
 };

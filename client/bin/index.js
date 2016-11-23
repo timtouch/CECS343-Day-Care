@@ -1,5 +1,5 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-exports.StudentInfoController = function($scope, $routeParams, $http) {
+exports.StudentInfoController = function($scope, $routeParams, $http, $mdDialog, $location) {
   var id = $routeParams.id;
 
   //Make api request with info
@@ -7,7 +7,26 @@ exports.StudentInfoController = function($scope, $routeParams, $http) {
     get('/api/v1/student/' + id).
     success(function(data) {
       $scope.student = data.student;
-    });
+  });
+  $scope.showConfirm = function(ev) {
+    var confirm = $mdDialog.confirm()
+      .title('Do you want to DELETE this student?')
+      .textContent('This will permanently delete the student')
+      .ariaLabel('Lucky day')
+      .targetEvent(ev)
+      .ok('Yes please!')
+      .cancel('No thanks!');
+
+      //Deletes student if confirmed, otherwise do nothing
+      $mdDialog.show(confirm).then(function() {
+        $http.
+          delete('/api/v1/student/' + id).
+          success(function(data) {
+            console.log(data);
+          });
+        $location.url('/students');
+      }, function() {});
+  };
 
   setTimeout(function() {
     $scope.$emit('StudentInfoController');
@@ -63,7 +82,7 @@ exports.PickupDropoffController = function($scope, $http) {
 
 };
 
-exports.NewStudentController = function($scope, $http) {
+exports.NewStudentController = function($scope, $http, $location) {
   //Initialize models for saving input
   $scope.student = {
     medicalInfo: {},
@@ -106,8 +125,7 @@ exports.NewStudentController = function($scope, $http) {
       success(function(addedStudent){
         console.log("Successfully added" + addedStudent);
       });
-
-      console.log(JSON.stringify($scope.student, null, 2));
+      $location.url('/students');
     };
 
   setTimeout(function() {
@@ -116,7 +134,7 @@ exports.NewStudentController = function($scope, $http) {
 
 };
 
-exports.EditStudentController = function($scope, $routeParams, $http){
+exports.EditStudentController = function($scope, $routeParams, $http, $location){
   var studentid = $routeParams.id;
   $http.
     get('/api/v1/student/' + studentid).
@@ -138,8 +156,10 @@ exports.EditStudentController = function($scope, $routeParams, $http){
     success(function(student){
       console.log("Successfully edited" + student);
     });
+
+    $location.url('/students');
   };
-  
+
   setTimeout(function() {
     $scope.$emit('EditStudentController');
   }, 0);
@@ -210,7 +230,7 @@ _.each(directives, function(directive, name) {
   components.directive(name, directive);
 });
 
-var app = angular.module('day-care', ['day-care.components', 'ngRoute']);
+var app = angular.module('day-care', ['day-care.components', 'ngRoute', 'ngMaterial']);
 
 app.config(function($routeProvider) {
   $routeProvider.
