@@ -22,13 +22,11 @@ var User = require('./models/user.js');
 var app = express();
 
 //Define middleware
+app.use(express.static(path.join(__dirname, '../client')));
 app.use(morgan('dev'));
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-
-//api routes
-app.use('/api/v1', require('./api')(wagner));
 
 app.use(session({
   secret: 'shhitsasecret',
@@ -44,12 +42,14 @@ passport.use(new localStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+//routes
+app.use('/api/v1', require('./student.api')(wagner));
+app.use('/user/', require('./user.api')(wagner));
+
 app.get('/', function(req, res) {
-  res.sendFile(path.join(__dirname, '..client', 'index.html'));
+  res.sendFile(path.join(__dirname, '../client', 'index.html'));
 });
 
-// Serve up static HTML pages from the file system.
-app.use(express.static('./client', { maxAge: 4 * 60 * 60 * 1000 /* 2hrs */ }));
 
 // error handlers
 app.use(function(req, res, next) {
