@@ -2,12 +2,16 @@ var express = require('express');
 var passport = require('passport');
 var status = require('http-status');
 
-var User = require('./models/user.js');
+var User = require('../models/user.js');
 
 module.exports = function(wagner){
   var api = express.Router();
 
-    api.post('/register', function(req, res) {
+  //======================================================================
+  // HANDLES USER API CALLS
+  //======================================================================
+  //Register a new user, error if username already exists
+  api.post('/register', function(req, res) {
     User.register(new User({ username: req.body.username }),
       req.body.password, function(err, account) {
       if (err) {
@@ -23,6 +27,7 @@ module.exports = function(wagner){
     });
   });
 
+  //Login a user, error if incorrect login info
   api.post('/login', function(req, res, next) {
     passport.authenticate('local', function(err, user, info) {
       if (err) {
@@ -46,6 +51,7 @@ module.exports = function(wagner){
     })(req, res, next);
   });
 
+  //Logout user
   api.get('/logout', function(req, res) {
     req.logout();
     res.status(200).json({
@@ -53,6 +59,7 @@ module.exports = function(wagner){
     });
   });
 
+  //Check if user is properly logged in
   api.get('/status', function(req, res) {
     if (!req.isAuthenticated()) {
       return res.status(200).json({

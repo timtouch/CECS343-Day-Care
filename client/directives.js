@@ -45,4 +45,11 @@ exports.editStudent = function() {
     controller: "EditStudentController",
     templateUrl: "/templates/edit_student.html"
   }
-}
+};
+
+exports.login = function() {
+  return {
+    controller: "LoginController",
+    templateUrl: "/templates/login.html"
+  }
+};

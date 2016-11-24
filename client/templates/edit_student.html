@@ -1,4 +1,4 @@
-<div class="edit-student">
+<div class="edit-student col-md-4">
   <form class="form-horizontal" name="editStudent" ng-submit="editStudent.$valid && updateStudent()">
     <div class="form-group">
       <label for="student">Student</label>
@@ -43,7 +43,6 @@
         <input type="text" class="form-control" placeholder="Relationship" ng-model="guardian.relationship" required/>
         <input type="text" class="form-control" placeholder="Codeword" ng-model="guardian.codeword" required/>
       </div>
-      <!--TODO: Give User feedback when saving changes-->
       <button type="submit" class="btn btn-primary" value="Submit">Save</button>
   </form>
 </div>

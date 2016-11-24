@@ -2,7 +2,6 @@ var express = require('express');
 var wagner = require('wagner-core');
 var passport = require('passport');
 var localStrategy = require('passport-local').Strategy;
-var flash = require('connect-flash');
 
 var path = require('path');
 var morgan = require('morgan');
@@ -43,8 +42,8 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 //routes
-app.use('/api/v1', require('./student.api')(wagner));
-app.use('/user/', require('./user.api')(wagner));
+app.use('/api/v1', require('./routes/student.api')(wagner));
+app.use('/user/', require('./routes/user.api')(wagner));
 
 app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, '../client', 'index.html'));

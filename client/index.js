@@ -16,28 +16,56 @@ var app = angular.module('day-care', ['day-care.components', 'ngRoute', 'ngMater
 
 app.config(function($routeProvider) {
   $routeProvider.
+    when('/login',{
+      templateUrl:'/templates/login.html',
+      controller: 'LoginController',
+      access: { restricted: false }
+    }).
     when('/student/:id', {
       templateUrl: '/templates/student_info.html',
-      controller: 'StudentInfoController'
+      controller: 'StudentInfoController',
+      access: { restricted: true }
     }).
     when('/attendence_sheet', {
       templateUrl: '/templates/attendence_sheet.html',
-      controller: 'AttendenceSheetController'
+      controller: 'AttendenceSheetController',
+      access: { restricted: true }
     }).
     when('/students', {
       templateUrl: '/templates/students.html',
-      controller: 'StudentsController'
+      controller: 'StudentsController',
+      access: { restricted: true }
     }).
     when('/pickup_dropoff', {
       templateUrl: '/templates/pickup_dropoff.html',
-      controller: 'PickupDropoffController'
+      controller: 'PickupDropoffController',
+      access: { restricted: true }
     }).
     when('/new_student', {
       templateUrl: '/templates/new_student.html',
-      controller: 'NewStudentController'
+      controller: 'NewStudentController',
+      access: { restricted: true }
     }).
     when('/edit_student/:id', {
         templateUrl: '/templates/edit_student.html',
-        controller: 'EditStudentController'
+        controller: 'EditStudentController',
+        access: { restricted: true }
+    });/*.
+    otherwise({
+      redirectTo: '/'
     });
+    */
+});
+
+app.run(function ($rootScope, $location, $route, AuthService) {
+  $rootScope.$on('$routeChangeStart',
+    function (event, next, current) {
+      AuthService.getUserStatus()
+      .then(function(){
+        if (next.access.restricted && !AuthService.isLoggedIn()){
+          $location.path('/login');
+          $route.reload();
+        }
+      });
+  });
 });
