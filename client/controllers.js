@@ -1,3 +1,9 @@
+exports.HomepageController = function ($scope) {
+
+  setTimeout(function() {
+    $scope.$emit('HomepageController');
+  }, 0);
+}
 exports.StudentInfoController = function($scope, $routeParams, $http, $mdDialog, $location) {
   var id = $routeParams.id;
 
@@ -70,7 +76,7 @@ exports.StudentsController = function ( $scope, $http ) {
     });
 
   setTimeout(function() {
-    $scope.$emit('AttendenceSheetController');
+    $scope.$emit('StudentsController');
   }, 0);
 
 };
@@ -136,7 +142,7 @@ exports.NewStudentController = function($scope, $http, $location) {
     };
 
   setTimeout(function() {
-    $scope.$emit('NewStudentController');
+    $scope.$emit('AddStudentController');
   }, 0);
 
 };
@@ -195,4 +201,51 @@ exports.LoginController = function($scope, $location, AuthService) {
         $scope.loginForm = {};
       });
   };
+
+  setTimeout(function() {
+    $scope.$emit('LoginController');
+  }, 0);
+};
+
+exports.AccountManagerController = function($scope, $http, AuthService) {
+  $http.get('/user/users').
+    success(function(data) {
+      $scope.users = data.users;
+    });
+
+  setTimeout(function() {
+    $scope.$emit('AccountManagerController');
+  }, 0);
+};
+
+exports.RegisterUserController = function($scope, $location, AuthService) {
+
+  $scope.roles = ['user', 'admin'];
+  $scope.register = function () {
+
+      // initial values
+      $scope.error = false;
+      $scope.disabled = true;
+
+      // call register from service
+      AuthService.register($scope.registerForm.username, $scope.registerForm.password)
+        // handle success
+        .then(function () {
+          $location.path('/login');
+          $scope.disabled = false;
+          $scope.registerForm = {};
+        })
+        // handle error
+        .catch(function () {
+          $scope.error = true;
+          $scope.errorMessage = "Something went wrong!";
+          $scope.disabled = false;
+          $scope.registerForm = {};
+        });
+
+    };
+
+  setTimeout(function() {
+    $scope.$emit('RegisterUserController');
+  }, 0);
 };

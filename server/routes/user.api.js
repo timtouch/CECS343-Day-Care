@@ -71,5 +71,23 @@ module.exports = function(wagner){
     });
   });
 
+  //Retrieve list of users
+  //Should only be for admins
+  api.get('/users', function(req, res) {
+    User.find({}, { _id: 0, password: 0 }, function(err, users){
+      if(err) {
+        return res.
+          status(status.INTERNAL_SERVER_ERROR).
+          json({ error: err.toString() });
+      }
+      if (!users) {
+        return res.
+          status(status.NOT_FOUND).
+          json({ error: error.toString() });
+      }
+      res.json( { users: users });
+    });
+  });
+
   return api;
 };

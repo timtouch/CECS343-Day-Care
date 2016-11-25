@@ -14,8 +14,14 @@ _.each(directives, function(directive, name) {
 
 var app = angular.module('day-care', ['day-care.components', 'ngRoute', 'ngMaterial']);
 
+//Handles the client side routing
 app.config(function($routeProvider) {
   $routeProvider.
+    when('/', {
+      templateUrl: '/templates/homepage.html',
+      controller: 'HomepageController',
+      access: { restricted: false }
+    }).
     when('/login',{
       templateUrl:'/templates/login.html',
       controller: 'LoginController',
@@ -47,16 +53,27 @@ app.config(function($routeProvider) {
       access: { restricted: true }
     }).
     when('/edit_student/:id', {
-        templateUrl: '/templates/edit_student.html',
-        controller: 'EditStudentController',
-        access: { restricted: true }
-    });/*.
+      templateUrl: '/templates/edit_student.html',
+      controller: 'EditStudentController',
+      access: { restricted: true }
+    }).
+    when('/account_manager', {
+      templateUrl: '/templates/account_manager.html',
+      controller: 'AccountManagerController',
+      access: { restricted: false } //<<NOTE: Set to false for testing purposes
+    }).
+    when('/register_user', {
+      templateUrl: '/templates/register_user.html',
+      controller: 'RegisterUserController',
+      access: { restricted: false } //<<NOTE: Set to false for testing purposes
+    }).
     otherwise({
-      redirectTo: '/'
+      redirectTo: '/',
+      access: { restricted: false }
     });
-    */
 });
 
+//Checks if user is logged in and redirects to login page if they are not
 app.run(function ($rootScope, $location, $route, AuthService) {
   $rootScope.$on('$routeChangeStart',
     function (event, next, current) {

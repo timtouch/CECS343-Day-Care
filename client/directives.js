@@ -1,3 +1,10 @@
+exports.homepage = function() {
+  return {
+    controller: "HomepageController",
+    templateUrl: "/templates/homepage.html"
+  }
+};
+
 exports.studentInfo = function() {
   return {
     controller: "StudentInfoController",
@@ -51,5 +58,19 @@ exports.login = function() {
   return {
     controller: "LoginController",
     templateUrl: "/templates/login.html"
+  }
+};
+
+exports.accountManager = function() {
+  return {
+    controller: "AccountManagerController",
+    templateUrl: "/templates/account_manager.html"
+  }
+};
+
+exports.registerUser = function() {
+  return {
+    controller: "RegisterUserController",
+    templateUrl: "/templates/register_user.html"
   }
 };

@@ -1,4 +1,10 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+exports.HomepageController = function ($scope) {
+
+  setTimeout(function() {
+    $scope.$emit('HomepageController');
+  }, 0);
+}
 exports.StudentInfoController = function($scope, $routeParams, $http, $mdDialog, $location) {
   var id = $routeParams.id;
 
@@ -71,7 +77,7 @@ exports.StudentsController = function ( $scope, $http ) {
     });
 
   setTimeout(function() {
-    $scope.$emit('AttendenceSheetController');
+    $scope.$emit('StudentsController');
   }, 0);
 
 };
@@ -137,7 +143,7 @@ exports.NewStudentController = function($scope, $http, $location) {
     };
 
   setTimeout(function() {
-    $scope.$emit('NewStudentController');
+    $scope.$emit('AddStudentController');
   }, 0);
 
 };
@@ -196,9 +202,63 @@ exports.LoginController = function($scope, $location, AuthService) {
         $scope.loginForm = {};
       });
   };
+
+  setTimeout(function() {
+    $scope.$emit('LoginController');
+  }, 0);
+};
+
+exports.AccountManagerController = function($scope, $http, AuthService) {
+  $http.get('/user/users').
+    success(function(data) {
+      $scope.users = data.users;
+    });
+
+  setTimeout(function() {
+    $scope.$emit('AccountManagerController');
+  }, 0);
+};
+
+exports.RegisterUserController = function($scope, $location, AuthService) {
+
+  $scope.roles = ['user', 'admin'];
+  $scope.register = function () {
+
+      // initial values
+      $scope.error = false;
+      $scope.disabled = true;
+
+      // call register from service
+      AuthService.register($scope.registerForm.username, $scope.registerForm.password)
+        // handle success
+        .then(function () {
+          $location.path('/login');
+          $scope.disabled = false;
+          $scope.registerForm = {};
+        })
+        // handle error
+        .catch(function () {
+          $scope.error = true;
+          $scope.errorMessage = "Something went wrong!";
+          $scope.disabled = false;
+          $scope.registerForm = {};
+        });
+
+    };
+
+  setTimeout(function() {
+    $scope.$emit('RegisterUserController');
+  }, 0);
 };
 
 },{}],2:[function(require,module,exports){
+exports.homepage = function() {
+  return {
+    controller: "HomepageController",
+    templateUrl: "/templates/homepage.html"
+  }
+};
+
 exports.studentInfo = function() {
   return {
     controller: "StudentInfoController",
@@ -255,6 +315,20 @@ exports.login = function() {
   }
 };
 
+exports.accountManager = function() {
+  return {
+    controller: "AccountManagerController",
+    templateUrl: "/templates/account_manager.html"
+  }
+};
+
+exports.registerUser = function() {
+  return {
+    controller: "RegisterUserController",
+    templateUrl: "/templates/register_user.html"
+  }
+};
+
 },{}],3:[function(require,module,exports){
 var controllers = require('./controllers');
 var directives = require('./directives');
@@ -272,8 +346,14 @@ _.each(directives, function(directive, name) {
 
 var app = angular.module('day-care', ['day-care.components', 'ngRoute', 'ngMaterial']);
 
+//Handles the client side routing
 app.config(function($routeProvider) {
   $routeProvider.
+    when('/', {
+      templateUrl: '/templates/homepage.html',
+      controller: 'HomepageController',
+      access: { restricted: false }
+    }).
     when('/login',{
       templateUrl:'/templates/login.html',
       controller: 'LoginController',
@@ -305,16 +385,27 @@ app.config(function($routeProvider) {
       access: { restricted: true }
     }).
     when('/edit_student/:id', {
-        templateUrl: '/templates/edit_student.html',
-        controller: 'EditStudentController',
-        access: { restricted: true }
-    });/*.
+      templateUrl: '/templates/edit_student.html',
+      controller: 'EditStudentController',
+      access: { restricted: true }
+    }).
+    when('/account_manager', {
+      templateUrl: '/templates/account_manager.html',
+      controller: 'AccountManagerController',
+      access: { restricted: false } //<<NOTE: Set to false for testing purposes
+    }).
+    when('/register_user', {
+      templateUrl: '/templates/register_user.html',
+      controller: 'RegisterUserController',
+      access: { restricted: false } //<<NOTE: Set to false for testing purposes
+    }).
     otherwise({
-      redirectTo: '/'
+      redirectTo: '/',
+      access: { restricted: false }
     });
-    */
 });
 
+//Checks if user is logged in and redirects to login page if they are not
 app.run(function ($rootScope, $location, $route, AuthService) {
   $rootScope.$on('$routeChangeStart',
     function (event, next, current) {
