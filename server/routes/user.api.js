@@ -92,7 +92,7 @@ module.exports = function(wagner){
       res.json( { users: users });
     });
   });
-
+  //Get information of certain user
   api.get('/:username', function(req, res) {
     User.find({username: req.params.username}, function(err, user){
       if(err){
@@ -106,6 +106,39 @@ module.exports = function(wagner){
           json({ error: 'Not found' });
       }
       res.json({ user: user });
+    });
+  });
+  //Delete a user
+  api.delete('/:username', function(req, res) {
+    User.remove( { username: req.params.username }, function(err) {
+      if(err) {
+        return next(err)
+      }
+      else {
+        res.send("Successfully deleted user");
+      }
+    });
+  });
+  //Change password of user
+  api.put('/:username', function(req, res, next) {
+    User.findByUsername(req.params.username).then(function(user){
+      if(user){
+        user.setPassword(req.body.password, function(err, user){
+          if(err){
+            return next(err);
+          }
+          user.save();
+          res.
+            status(200).
+            json({message: 'Password Reset Successful'});
+        });
+      } else {
+        res.
+          status(status.INTERNAL_SERVER_ERROR).
+          json({message: 'This user does not exist'});
+      }
+    },function(err){
+      return next(err);
     });
   });
 
