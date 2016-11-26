@@ -60,7 +60,7 @@ app.config(function($routeProvider) {
     when('/account_manager', {
       templateUrl: '/templates/account_manager.html',
       controller: 'AccountManagerController',
-      access: { restricted: false } //<<NOTE: Set to false for testing purposes
+      access: { restricted: false, admin: true } //<<NOTE: Set to false for testing purposes
     }).
     when('/register_user', {
       templateUrl: '/templates/register_user.html',
@@ -81,6 +81,10 @@ app.run(function ($rootScope, $location, $route, AuthService) {
       .then(function(){
         if (next.access.restricted && !AuthService.isLoggedIn()){
           $location.path('/login');
+          $route.reload();
+        }
+        if (next.access.admin && !AuthService.isAdmin()){
+          $location.path('/');
           $route.reload();
         }
       });

@@ -4,10 +4,12 @@ angular.module('day-care').factory('AuthService',
 
     // create user variable
     var user = null;
+    var role = null;
 
     // return available functions for use in the controllers
     return ({
       isLoggedIn: isLoggedIn,
+      isAdmin: isAdmin,
       getUserStatus: getUserStatus,
       login: login,
       logout: logout,
@@ -22,14 +24,24 @@ angular.module('day-care').factory('AuthService',
       }
     }
 
+    function isAdmin(){
+      if(role === 'admin') {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
     function getUserStatus() {
       return $http.get('/user/status')
       // handle success
       .success(function (data) {
         if(data.status){
           user = true;
+          role = data.role;
         } else {
           user = false;
+          role = null;
         }
       })
       // handle error
@@ -50,15 +62,18 @@ angular.module('day-care').factory('AuthService',
         .success(function (data, status) {
           if(status === 200 && data.status){
             user = true;
+            role = data.role;
             deferred.resolve();
           } else {
             user = false;
+            role = null;
             deferred.reject();
           }
         })
         // handle error
         .error(function (data) {
           user = false;
+          role = null;
           deferred.reject();
         });
 
@@ -77,11 +92,13 @@ angular.module('day-care').factory('AuthService',
         // handle success
         .success(function (data) {
           user = false;
+          role = null;
           deferred.resolve();
         })
         // handle error
         .error(function (data) {
           user = false;
+          role = null;
           deferred.reject();
         });
 
@@ -90,14 +107,14 @@ angular.module('day-care').factory('AuthService',
 
     }
 
-    function register(username, password) {
+    function register(username, password, role, firstName, lastName) {
 
       // create a new instance of deferred
       var deferred = $q.defer();
 
       // send a post request to the server
       $http.post('/user/register',
-        {username: username, password: password})
+        {username: username, password: password, role: role, firstName: firstName, lastName: lastName})
         // handle success
         .success(function (data, status) {
           if(status === 200 && data.status){
@@ -108,7 +125,8 @@ angular.module('day-care').factory('AuthService',
         })
         // handle error
         .error(function (data) {
-          deferred.reject();
+          console.log(data.err);
+          deferred.reject(data.err);
         });
 
       // return promise object

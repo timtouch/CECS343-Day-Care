@@ -3,6 +3,11 @@
   <div ng-show="error" class="alert alert-danger">{{errorMessage}}</div>
   <form class="form" ng-submit="register()">
     <div class="form-group">
+      <label>Name</label>
+      <input type="text" class="form-control" name="firstName" placeholder="First Name" ng-model="registerForm.firstName" required>
+      <input type="text" class="form-control" name="lastName" placeholder="Last Name" ng-model="registerForm.lastName" required>
+    </div>
+    <div class="form-group">
       <label>Username</label>
       <input type="text" class="form-control" name="username" ng-model="registerForm.username" required>
     </div>
@@ -10,8 +15,13 @@
       <label>Password</label>
       <input type="password" class="form-control" name="password" ng-model="registerForm.password" required>
     </div>
-    <select ng-model="chosenRole" ng-options="role for role in roles">
-    </select>
+    <div class="form-group">
+      <label>Role</label>
+      <select class="form-control" ng-model="chosenRole" required>
+        <option ng-repeat="role in roles" value="{{role}}">{{role}}</option>
+      </select>
+    </div>
+    <p>{{registerForm}}</p>
     <div>
         <button type="submit" class="btn btn-default" ng-disabled="disabled">Register</button>
     </div>

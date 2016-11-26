@@ -209,6 +209,8 @@ exports.LoginController = function($scope, $location, AuthService) {
 };
 
 exports.AccountManagerController = function($scope, $http, AuthService) {
+
+  console.log(AuthService.isAdmin());
   $http.get('/user/users').
     success(function(data) {
       $scope.users = data.users;
@@ -222,6 +224,7 @@ exports.AccountManagerController = function($scope, $http, AuthService) {
 exports.RegisterUserController = function($scope, $location, AuthService) {
 
   $scope.roles = ['user', 'admin'];
+  $scope.chosenRole = 'user';
   $scope.register = function () {
 
       // initial values
@@ -229,7 +232,8 @@ exports.RegisterUserController = function($scope, $location, AuthService) {
       $scope.disabled = true;
 
       // call register from service
-      AuthService.register($scope.registerForm.username, $scope.registerForm.password)
+      AuthService.register($scope.registerForm.username, $scope.registerForm.password,
+          $scope.chosenRole, $scope.registerForm.firstName, $scope.registerForm.lastName)
         // handle success
         .then(function () {
           $location.path('/login');
@@ -237,9 +241,9 @@ exports.RegisterUserController = function($scope, $location, AuthService) {
           $scope.registerForm = {};
         })
         // handle error
-        .catch(function () {
+        .catch(function (err) {
           $scope.error = true;
-          $scope.errorMessage = "Something went wrong!";
+          $scope.errorMessage = err.message || "Something went wrong!";
           $scope.disabled = false;
           $scope.registerForm = {};
         });
@@ -392,7 +396,7 @@ app.config(function($routeProvider) {
     when('/account_manager', {
       templateUrl: '/templates/account_manager.html',
       controller: 'AccountManagerController',
-      access: { restricted: false } //<<NOTE: Set to false for testing purposes
+      access: { restricted: false, admin: true } //<<NOTE: Set to false for testing purposes
     }).
     when('/register_user', {
       templateUrl: '/templates/register_user.html',
@@ -413,6 +417,10 @@ app.run(function ($rootScope, $location, $route, AuthService) {
       .then(function(){
         if (next.access.restricted && !AuthService.isLoggedIn()){
           $location.path('/login');
+          $route.reload();
+        }
+        if (next.access.admin && !AuthService.isAdmin()){
+          $location.path('/');
           $route.reload();
         }
       });

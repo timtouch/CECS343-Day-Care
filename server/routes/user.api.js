@@ -12,7 +12,8 @@ module.exports = function(wagner){
   //======================================================================
   //Register a new user, error if username already exists
   api.post('/register', function(req, res) {
-    User.register(new User({ username: req.body.username }),
+    User.register(new User({ username: req.body.username, role: req.body.role,
+        firstName: req.body.firstName, lastName: req.body.lastName }),
       req.body.password, function(err, account) {
       if (err) {
         return res.status(500).json({
@@ -45,7 +46,8 @@ module.exports = function(wagner){
           });
         }
         res.status(200).json({
-          status: 'Login successful!'
+          status: 'Login successful!',
+          role: user.role
         });
       });
     })(req, res, next);
@@ -63,11 +65,13 @@ module.exports = function(wagner){
   api.get('/status', function(req, res) {
     if (!req.isAuthenticated()) {
       return res.status(200).json({
-        status: false
+        status: false,
+        role: null
       });
     }
     res.status(200).json({
-      status: true
+      status: true,
+      role: req.user.role
     });
   });
 
@@ -86,6 +90,22 @@ module.exports = function(wagner){
           json({ error: error.toString() });
       }
       res.json( { users: users });
+    });
+  });
+
+  api.get('/:username', function(req, res) {
+    User.find({username: req.params.username}, function(err, user){
+      if(err){
+        return res.
+          status(status.INTERNAL_SERVER_ERROR).
+          json({ error: err.toString() });
+      }
+      if(!user){
+        return res.
+          status(status.NOT_FOUND).
+          json({ error: 'Not found' });
+      }
+      res.json({ user: user });
     });
   });
 
