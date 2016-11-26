@@ -396,12 +396,12 @@ app.config(function($routeProvider) {
     when('/account_manager', {
       templateUrl: '/templates/account_manager.html',
       controller: 'AccountManagerController',
-      access: { restricted: false, admin: true } //<<NOTE: Set to false for testing purposes
+      access: { restricted: true, admin: true }
     }).
     when('/register_user', {
       templateUrl: '/templates/register_user.html',
       controller: 'RegisterUserController',
-      access: { restricted: false } //<<NOTE: Set to false for testing purposes
+      access: { restricted: true, admin: true }
     }).
     otherwise({
       redirectTo: '/',

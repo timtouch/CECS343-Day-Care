@@ -1,11 +1,11 @@
 
 <div class="nav-bar">
-  <ul class="nav nav-tabs">
-    <li class="active"><a data-toggle="tab" href="#/attendence_sheet">Attendence Sheet</a></li>
-    <li><a data-toggle="tab" href="#/students">Students</a></li>
-    <li><a data-toggle="tab" href="#/pickup_dropoff">Pick-up/Drop-Off</a></li>
-    <li><a data-toggle="tab" href="#/account_manager">Account Manager</a></li>
-    <li><a data-toggle="tab" href="#/login">Login</a></li>
+  <ul class="nav nav-tabs" ng-init="selectedTab = 'attendenceSheet'">
+    <li ng-class="{'active': selectedTab === 'attendenceSheet'}" ng-click="selectedTab = 'attendenceSheet'"><a data-toggle="tab" href="#/attendence_sheet">Attendence Sheet</a></li>
+    <li ng-class="{'active': selectedTab === 'students'}" ng-click="selectedTab = 'students'"><a data-toggle="tab" href="#/students">Students</a></li>
+    <li ng-class="{'active': selectedTab === 'pickupDropoff'}" ng-click="selectedTab = 'pickupDropoff'"><a data-toggle="tab" href="#/pickup_dropoff">Pick-up/Drop-Off</a></li>
+    <li ng-class="{'active': selectedTab === 'accountManager'}" ng-click="selectedTab = 'accountManager'"><a data-toggle="tab" href="#/account_manager">Account Manager</a></li>
+    <li ng-class="{'active': selectedTab === 'login'}" ng-click="selectedTab = 'login'"><a data-toggle="tab" href="#/login">Login</a></li>
     <a ng-click="logout()" class="btn btn-default">Logout</a>
   </ul>
 

@@ -120,7 +120,7 @@ module.exports = function(wagner){
     });
   });
   //Change password of user
-  api.put('/:username', function(req, res, next) {
+  api.put('/change_password/:username', function(req, res, next) {
     User.findByUsername(req.params.username).then(function(user){
       if(user){
         user.setPassword(req.body.password, function(err, user){
