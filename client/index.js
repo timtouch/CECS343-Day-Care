@@ -14,30 +14,79 @@ _.each(directives, function(directive, name) {
 
 var app = angular.module('day-care', ['day-care.components', 'ngRoute', 'ngMaterial']);
 
+//Handles the client side routing
 app.config(function($routeProvider) {
   $routeProvider.
+    when('/', {
+      templateUrl: '/templates/homepage.html',
+      controller: 'HomepageController',
+      access: { restricted: false }
+    }).
+    when('/login',{
+      templateUrl:'/templates/login.html',
+      controller: 'LoginController',
+      access: { restricted: false }
+    }).
     when('/student/:id', {
       templateUrl: '/templates/student_info.html',
-      controller: 'StudentInfoController'
+      controller: 'StudentInfoController',
+      access: { restricted: true }
     }).
     when('/attendence_sheet', {
       templateUrl: '/templates/attendence_sheet.html',
-      controller: 'AttendenceSheetController'
+      controller: 'AttendenceSheetController',
+      access: { restricted: true }
     }).
     when('/students', {
       templateUrl: '/templates/students.html',
-      controller: 'StudentsController'
+      controller: 'StudentsController',
+      access: { restricted: true }
     }).
     when('/pickup_dropoff', {
       templateUrl: '/templates/pickup_dropoff.html',
-      controller: 'PickupDropoffController'
+      controller: 'PickupDropoffController',
+      access: { restricted: true }
     }).
     when('/new_student', {
       templateUrl: '/templates/new_student.html',
-      controller: 'NewStudentController'
+      controller: 'NewStudentController',
+      access: { restricted: true }
     }).
     when('/edit_student/:id', {
-        templateUrl: '/templates/edit_student.html',
-        controller: 'EditStudentController'
+      templateUrl: '/templates/edit_student.html',
+      controller: 'EditStudentController',
+      access: { restricted: true }
+    }).
+    when('/account_manager', {
+      templateUrl: '/templates/account_manager.html',
+      controller: 'AccountManagerController',
+      access: { restricted: true, admin: true }
+    }).
+    when('/register_user', {
+      templateUrl: '/templates/register_user.html',
+      controller: 'RegisterUserController',
+      access: { restricted: true, admin: true }
+    }).
+    otherwise({
+      redirectTo: '/',
+      access: { restricted: false }
     });
+});
+
+//Checks if user is logged in and redirects to login page if they are not
+app.run(function ($rootScope, $location, $route, AuthService) {
+  $rootScope.$on('$routeChangeStart',
+    function (event, next, current) {
+      AuthService.getUserStatus()
+      .then(function(){
+        if (next.access.restricted && !AuthService.isLoggedIn()){
+          $location.path('/login');
+          $route.reload();
+        }
+        if (next.access.admin && !AuthService.isAdmin()){
+          $location.path('/');
+          $route.reload();
+        }
+      });
+  });
 });

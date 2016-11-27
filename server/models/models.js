@@ -13,9 +13,9 @@ module.exports = function(wagner){
   var Student =
     mongoose.model('Student', require('./student'), 'students');
 
-    var models = {
-        Student: Student
-    }
+  var models = {
+      Student: Student
+  }
 
   _.each(models, function(value, key){
       wagner.factory(key, function() {

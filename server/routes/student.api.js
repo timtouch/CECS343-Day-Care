@@ -1,13 +1,16 @@
 var bodyparser = require('body-parser');
 var express = require('express');
 var status = require('http-status');
-var _ = require('underscore');
+
 
 module.exports = function(wagner){
   var api = express.Router();
 
   api.use(bodyparser.json());
 
+  //======================================================================
+  // HANDLES STUDENT API CALLS
+  //======================================================================
   // Get a student given their id
   api.get('/student/:id', wagner.invoke(function(Student) {
     return function(req, res) {
@@ -80,6 +83,7 @@ module.exports = function(wagner){
       });
     };
   }));
+
 
   return api;
 };
