@@ -9,10 +9,12 @@
       </tr>
     </thead>
     <tbody ng-repeat="user in users">
-      <td>{{user.lastName}}</td>
-      <td>{{user.firstName}}</td>
-      <td>{{user.username}}</td>
-      <td>{{user.role}}</td>
+      <tr ng-click="setSelected(user.username)">
+        <td>{{user.lastName}}</td>
+        <td>{{user.firstName}}</td>
+        <td>{{user.username}}</td>
+        <td>{{user.role}}</td>
+      </tr>
     </tbody>
   </table>
   <button class="btn btn-primary" ng-click="addUser()">Add User</button>

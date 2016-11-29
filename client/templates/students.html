@@ -11,13 +11,15 @@
         <th>Relationship</th>
       </tr>
       <tbody ng-repeat="student in students">
-          <td><a ng-href="#/student/{{student._id}}">{{student.lastName}}</a></td>
+        <tr ng-click="setSelected(student._id)">
+          <td>{{student.lastName}}</a></td>
           <td>{{student.firstName}}</td>
           <td><p ng-repeat="foodAllergy in student.medicalInfo.foodAllergies">{{foodAllergy}}<p></td>
           <td><p ng-repeat="medicalAllergy in student.medicalInfo.medicalAllergies">{{medicalAllergy}}<p></td>
           <td>{{student.medicalInfo.medicalNeeds}}</td>
           <td>{{student.emergencyContact.emPhone}}</td>
           <td>{{student.emergencyContact.relationship}}</td>
+        </tr>
       </tbody>
     </thead>
   </table>

@@ -67,13 +67,17 @@ exports.AttendenceSheetController = function($scope, $http) {
 
 };
 
-exports.StudentsController = function ( $scope, $http ) {
+exports.StudentsController = function ( $scope, $http, $location ) {
 
   $http.
     get('/api/v1/student').
     success(function(data) {
       $scope.students = data.students;
     });
+
+  $scope.setSelected = function(studentID){
+    $location.path('/student/' + studentID);
+  };
 
   setTimeout(function() {
     $scope.$emit('StudentsController');
@@ -165,9 +169,9 @@ exports.EditStudentController = function($scope, $routeParams, $http, $location)
 
   $scope.updateStudent = function() {
     $http.
-    put('/api/v1/student', $scope.student).
-    success(function(student){
-      console.log("Successfully edited" + student);
+      put('/api/v1/student', $scope.student).
+      success(function(student){
+        console.log("Successfully edited" + student);
     });
 
     $location.url('/students');
@@ -207,13 +211,21 @@ exports.LoginController = function($scope, $location, AuthService) {
   }, 0);
 };
 
-exports.AccountManagerController = function($scope, $http, AuthService) {
+exports.AccountManagerController = function($scope, $http, $location, AuthService) {
 
   console.log(AuthService.isAdmin());
   $http.get('/user/users').
     success(function(data) {
       $scope.users = data.users;
-    });
+  });
+
+  $scope.addUser = function(){
+    $location.path('/register_user');
+  };
+
+  $scope.setSelected = function(username){
+    $location.path('/user_profile/' + username);
+  };
 
   setTimeout(function() {
     $scope.$emit('AccountManagerController');
@@ -253,3 +265,17 @@ exports.RegisterUserController = function($scope, $location, AuthService) {
     $scope.$emit('RegisterUserController');
   }, 0);
 };
+
+exports.UserProfileController = function($scope, $http, $routeParams){
+  var username = $routeParams.username;
+  console.log(username);
+  $http.
+    get('/user/' +  username).
+    success(function(data){
+      $scope.user = data.user;
+  });
+
+  setTimeout(function() {
+    $scope.$emit('UserProfileController');
+  }, 0);
+}

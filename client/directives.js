@@ -74,3 +74,10 @@ exports.registerUser = function() {
     templateUrl: "/templates/register_user.html"
   }
 };
+
+exports.userProfile = function() {
+  return {
+    controller: "UserProfileController",
+    templateUrl: "/templates/user_profile.html"
+  }
+};

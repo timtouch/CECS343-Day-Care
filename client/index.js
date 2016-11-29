@@ -67,6 +67,11 @@ app.config(function($routeProvider) {
       controller: 'RegisterUserController',
       access: { restricted: true, admin: true }
     }).
+    when('/user_profile/:username', {
+      templateUrl: '/templates/user_profile.html',
+      controller: 'UserProfileController',
+      access: { restricted: true, admin: true }
+    }).
     otherwise({
       redirectTo: '/',
       access: { restricted: false }
