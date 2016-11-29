@@ -39,7 +39,9 @@ exports.StudentInfoController = function($scope, $routeParams, $http, $mdDialog,
 };
 
 exports.NavBarController = function($scope, $location, AuthService) {
-
+  $scope.currentURL = $location.url();
+  $scope.isLoggedIn = AuthService.isLoggedIn();
+  $scope.isAdmin = AuthService.isAdmin();
   $scope.logout = function() {
     //call logout from service
     AuthService.logout()
@@ -213,7 +215,6 @@ exports.LoginController = function($scope, $location, AuthService) {
 
 exports.AccountManagerController = function($scope, $http, $location, AuthService) {
 
-  console.log(AuthService.isAdmin());
   $http.get('/user/users').
     success(function(data) {
       $scope.users = data.users;
@@ -268,9 +269,8 @@ exports.RegisterUserController = function($scope, $location, AuthService) {
 
 exports.UserProfileController = function($scope, $http, $routeParams){
   var username = $routeParams.username;
-  console.log(username);
-  $http.
-    get('/user/' +  username).
+
+  $http.get('/user/' +  username).
     success(function(data){
       $scope.user = data.user;
   });
