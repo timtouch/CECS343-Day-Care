@@ -269,11 +269,16 @@ exports.RegisterUserController = function($scope, $location, AuthService) {
 
 exports.UserProfileController = function($scope, $http, $routeParams, $mdDialog, $location){
   var username = $routeParams.username;
+  $scope.roles = ['user', 'admin'];
+  $scope.user = {};
+  $scope.showEditForm = false;
 
   $http.get('/user/' +  username).
     success(function(data){
       $scope.user = data.user;
+      $scope.chosenRole = $scope.user.role;
   });
+
 
   $scope.showConfirm = function(ev) {
     var confirm = $mdDialog.confirm()
@@ -295,6 +300,20 @@ exports.UserProfileController = function($scope, $http, $routeParams, $mdDialog,
       }, function() {});
   };
 
+  $scope.editUser = function() {
+    $scope.showEditForm = true;
+  };
+
+  $scope.updateUser = function(){
+    console.log($scope.user);
+    $scope.user.role = $scope.chosenRole;
+    $http.
+      put('/user/edit_user/' + username, $scope.user).
+      success(function(data){
+        console.log(data);
+    });
+    $scope.showEditForm = false;
+  };
   setTimeout(function() {
     $scope.$emit('UserProfileController');
   }, 0);

@@ -119,6 +119,15 @@ module.exports = function(wagner){
       }
     });
   });
+  //Update user information
+  api.put('/edit_user/:username', function(req, res, next){
+    var user = req.body;
+    User.update({ username: user.username }, user, function( err, numAffected ){
+      if (err) { return next(err) }
+      res.send("Number affected:" + numAffected);
+    });
+  });
+
   //Change password of user
   api.put('/change_password/:username', function(req, res, next) {
     User.findByUsername(req.params.username).then(function(user){
