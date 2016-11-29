@@ -94,7 +94,7 @@ module.exports = function(wagner){
   });
   //Get information of certain user
   api.get('/:username', function(req, res) {
-    User.find({username: req.params.username}, function(err, user){
+    User.findOne({username: req.params.username}, function(err, user){
       if(err){
         return res.
           status(status.INTERNAL_SERVER_ERROR).
