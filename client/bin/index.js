@@ -249,7 +249,7 @@ exports.RegisterUserController = function($scope, $location, AuthService) {
           $scope.chosenRole, $scope.registerForm.firstName, $scope.registerForm.lastName)
         // handle success
         .then(function () {
-          $location.path('/login');
+          $location.path('/account_manager');
           $scope.disabled = false;
           $scope.registerForm = {};
         })
@@ -268,7 +268,7 @@ exports.RegisterUserController = function($scope, $location, AuthService) {
   }, 0);
 };
 
-exports.UserProfileController = function($scope, $http, $routeParams){
+exports.UserProfileController = function($scope, $http, $routeParams, $mdDialog, $location){
   var username = $routeParams.username;
 
   $http.get('/user/' +  username).
@@ -276,10 +276,30 @@ exports.UserProfileController = function($scope, $http, $routeParams){
       $scope.user = data.user;
   });
 
+  $scope.showConfirm = function(ev) {
+    var confirm = $mdDialog.confirm()
+      .title('Do you want to DELETE this user?')
+      .textContent('This will permanently delete the user')
+      .ariaLabel('Lucky day')
+      .targetEvent(ev)
+      .ok('Yes please!')
+      .cancel('No thanks!');
+
+      //Deletes student if confirmed, otherwise do nothing
+      $mdDialog.show(confirm).then(function() {
+        $http.
+          delete('/user/' +  username).
+          success(function(data) {
+            console.log(data);
+          });
+        $location.url('/account_manager');
+      }, function() {});
+  };
+
   setTimeout(function() {
     $scope.$emit('UserProfileController');
   }, 0);
-}
+};
 
 },{}],2:[function(require,module,exports){
 exports.homepage = function() {
