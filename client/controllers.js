@@ -55,7 +55,7 @@ exports.NavBarController = function($scope, $location, AuthService) {
   }, 0);
 };
 
-exports.AttendenceSheetController = function($scope, $http) {
+exports.AttendanceSheetController = function($scope, $http) {
 
   $http.
     get('/api/v1/student').
@@ -64,7 +64,7 @@ exports.AttendenceSheetController = function($scope, $http) {
     });
 
   setTimeout(function() {
-    $scope.$emit('AttendenceSheetController');
+    $scope.$emit('AttendanceSheetController');
   }, 0);
 
 };

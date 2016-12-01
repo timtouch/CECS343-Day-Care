@@ -42,6 +42,7 @@ passport.deserializeUser(User.deserializeUser());
 
 //api routes
 app.use('/api/v1', require('./routes/student.api')(wagner));
+app.use('/api/v1', require('./routes/attendance.api')(wagner));
 app.use('/user/', require('./routes/user.api')(wagner));
 
 app.get('/', function(req, res) {

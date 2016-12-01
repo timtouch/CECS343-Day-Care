@@ -32,9 +32,9 @@ app.config(function($routeProvider) {
       controller: 'StudentInfoController',
       access: { restricted: true }
     }).
-    when('/attendence_sheet', {
-      templateUrl: '/templates/attendence_sheet.html',
-      controller: 'AttendenceSheetController',
+    when('/attendance_sheet', {
+      templateUrl: '/templates/attendance_sheet.html',
+      controller: 'AttendanceSheetController',
       access: { restricted: true }
     }).
     when('/students', {
