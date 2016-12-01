@@ -14,7 +14,6 @@ var port = process.env.PORT || 3000;
 
 require('./models/models')(wagner);
 
-
 // user schema/model
 var User = require('./models/user.js');
 //create instance of express
@@ -41,7 +40,7 @@ passport.use(new localStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-//routes
+//api routes
 app.use('/api/v1', require('./routes/student.api')(wagner));
 app.use('/user/', require('./routes/user.api')(wagner));
 
