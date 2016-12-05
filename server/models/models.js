@@ -1,9 +1,9 @@
 var mongoose = require('mongoose');
 var _ = require('underscore');
 
-module.exports = function(wagner){
+module.exports = function(wagner) {
   mongoose.Promise = global.Promise;
-  var mongolabURI = "mongodb://timtouch:KidsInTheCrib@ds155727.mlab.com:55727/daycaredb";//process.env.MONGOLAB_URI || 'mongodb://localhost:27017/test';
+  var mongolabURI = "mongodb://timtouch:KidsInTheCrib@ds155727.mlab.com:55727/daycaredb"; //process.env.MONGOLAB_URI || 'mongodb://localhost:27017/test';
 
   mongoose.connect(mongolabURI, function (error) {
     if (error) console.error(error);
@@ -17,7 +17,7 @@ module.exports = function(wagner){
       Student: Student
   }
 
-  _.each(models, function(value, key){
+  _.each(models, function(value, key) {
       wagner.factory(key, function() {
         return value;
       });
