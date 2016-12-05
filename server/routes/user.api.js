@@ -92,6 +92,7 @@ module.exports = function(wagner){
       res.json( { users: users });
     });
   });
+  
   //Get information of certain user
   api.get('/:username', function(req, res) {
     User.findOne({username: req.params.username}, function(err, user){
@@ -108,6 +109,7 @@ module.exports = function(wagner){
       res.json({ user: user });
     });
   });
+  
   //Delete a user
   api.delete('/:username', function(req, res) {
     User.remove( { username: req.params.username }, function(err) {
@@ -119,6 +121,7 @@ module.exports = function(wagner){
       }
     });
   });
+  
   //Update user information
   api.put('/edit_user/:username', function(req, res, next){
     var user = req.body;
