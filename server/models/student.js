@@ -26,7 +26,6 @@ var studentSchema = {
 
 };
 
-
 var schema = new mongoose.Schema(studentSchema);
 
 module.exports = schema;
