@@ -58,6 +58,7 @@ exports.NavBarController = function($scope, $location, AuthService) {
 exports.AttendanceSheetController = function($scope, $http) {
   var utc = "2016-12-05"//new Date().toJSON().slice(0,10);
   $scope.error = "";
+  $scope.message = "";
   $scope.enumAttendance = ['Present', 'Absent', 'Tardy'];
 
   $scope.attendance = {
@@ -87,6 +88,15 @@ exports.AttendanceSheetController = function($scope, $http) {
           });
         });
     });
+
+  $scope.saveAttendance = function(){
+    $http.
+      post('/api/v1/attendance/', $scope.attendance).
+      success(function(data){
+        console.log("Successfully added" + data);
+        $scope.message = "Saved Successfully";
+    });
+  };
   /*
   $http.
     get('/api/v1/student').

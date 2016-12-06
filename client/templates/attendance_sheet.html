@@ -1,28 +1,33 @@
 <nav-bar></nav-bar>
 <div class="attendance-sheet">
   <p>{{error}}</p>
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Last Name</th>
-        <th>First Name</th>
-        <th>Attendance</th>
-        <th>Notes</th>
-      </tr>
-    </thead>
-    <tbody ng-repeat="student in attendance.students">
-      <tr>
-        <td>{{student.lastName}}</td>
-        <td>{{student.firstName}}</td>
-        <td>
-          <select class="form-control" ng-model="student.attendance" required>
-            <option ng-repeat="value in enumAttendance" value="{{value}}">{{value}}</option>
-          </select>
-        </td>
-        <td>
-          <input type="text" class="form-control" name="note" ng-model="student.notes" required>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <form class="form" ng-submit="saveAttendance()">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Last Name</th>
+          <th>First Name</th>
+          <th>Attendance</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody ng-repeat="student in attendance.students">
+        <tr>
+          <td>{{student.lastName}}</td>
+          <td>{{student.firstName}}</td>
+          <td>
+            <select class="form-control" ng-model="student.attendance" required>
+              <option ng-repeat="value in enumAttendance" value="{{value}}">{{value}}</option>
+            </select>
+          </td>
+          <td>
+            <input type="text" class="form-control" name="note" ng-model="student.notes">
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div>
+          <button type="submit" class="btn btn-primary" value="Submit">Save</button>
+    </div>
+  </form>
 </div>
