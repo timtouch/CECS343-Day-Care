@@ -128,10 +128,8 @@ angular.module('day-care').factory('AuthService',
           console.log(data.err);
           deferred.reject(data.err);
         });
-
       // return promise object
       return deferred.promise;
-
     }
 
 }]);
