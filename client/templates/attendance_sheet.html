@@ -1,11 +1,28 @@
 <nav-bar></nav-bar>
 <div class="attendance-sheet">
-  <div ng-repeat="student in students">
-    <p class="col-md-4">
-      {{student.lastName}}, {{student.firstName}}
-      <button type="button" class="btn btn-primary">Present</button>
-      <button type="button" class="btn btn-primary">Absent</button>
-      <button type="button" class="btn btn-primary">Tardy</button>
-    </p>
-  </div>
+  <p>{{error}}</p>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Last Name</th>
+        <th>First Name</th>
+        <th>Attendance</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody ng-repeat="student in attendance.students">
+      <tr>
+        <td>{{student.lastName}}</td>
+        <td>{{student.firstName}}</td>
+        <td>
+          <select class="form-control" ng-model="student.attendance" required>
+            <option ng-repeat="value in enumAttendance" value="{{value}}">{{value}}</option>
+          </select>
+        </td>
+        <td>
+          <input type="text" class="form-control" name="note" ng-model="student.notes" required>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>

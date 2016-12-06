@@ -57,12 +57,44 @@ exports.NavBarController = function($scope, $location, AuthService) {
 };
 
 exports.AttendanceSheetController = function($scope, $http) {
+  var utc = "2016-12-05"//new Date().toJSON().slice(0,10);
+  $scope.error = "";
+  $scope.enumAttendance = ['Present', 'Absent', 'Tardy'];
 
+  $scope.attendance = {
+    attendanceDate: utc,
+    students: []
+  }
+  //If the attendace exists in the DB, show it, otherwise initialize/populate a new attendance sheet
+  $http.
+    get('/api/v1/attendance/' + utc).
+    success(function(data) {
+      $scope.attendance = data.attendance;
+    }).
+    error( function(data) {
+      $scope.error = data.error;
+      $scope.attendance.attendanceDate = utc;
+      $http.
+        get('/api/v1/student').
+        success( function(data) {
+          $scope.attendance.students = data.students.map(
+            function (currStudent, index, studentArray){
+              return {
+                firstName: currStudent.firstName,
+                lastName: currStudent.lastName,
+                attendance: 'Absent',
+                notes: ''
+              };
+          });
+        });
+    });
+  /*
   $http.
     get('/api/v1/student').
     success(function(data) {
       $scope.students = data.students;
     });
+  */
 
   setTimeout(function() {
     $scope.$emit('AttendanceSheetController');
