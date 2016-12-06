@@ -19,10 +19,10 @@ exports.navBar = function() {
   }
 };
 
-exports.attendenceSheet = function() {
+exports.attendanceSheet = function() {
   return {
-    controller: "AttendenceSheetController",
-    templateUrl: "/templates/attendence_sheet.html"
+    controller: "AttendanceSheetController",
+    templateUrl: "/templates/attendance_sheet.html"
   }
 };
 

@@ -56,7 +56,7 @@ exports.NavBarController = function($scope, $location, AuthService) {
   }, 0);
 };
 
-exports.AttendenceSheetController = function($scope, $http) {
+exports.AttendanceSheetController = function($scope, $http) {
 
   $http.
     get('/api/v1/student').
@@ -65,7 +65,7 @@ exports.AttendenceSheetController = function($scope, $http) {
     });
 
   setTimeout(function() {
-    $scope.$emit('AttendenceSheetController');
+    $scope.$emit('AttendanceSheetController');
   }, 0);
 
 };
@@ -342,10 +342,10 @@ exports.navBar = function() {
   }
 };
 
-exports.attendenceSheet = function() {
+exports.attendanceSheet = function() {
   return {
-    controller: "AttendenceSheetController",
-    templateUrl: "/templates/attendence_sheet.html"
+    controller: "AttendanceSheetController",
+    templateUrl: "/templates/attendance_sheet.html"
   }
 };
 
@@ -440,9 +440,9 @@ app.config(function($routeProvider) {
       controller: 'StudentInfoController',
       access: { restricted: true }
     }).
-    when('/attendence_sheet', {
-      templateUrl: '/templates/attendence_sheet.html',
-      controller: 'AttendenceSheetController',
+    when('/attendance_sheet', {
+      templateUrl: '/templates/attendance_sheet.html',
+      controller: 'AttendanceSheetController',
       access: { restricted: true }
     }).
     when('/students', {

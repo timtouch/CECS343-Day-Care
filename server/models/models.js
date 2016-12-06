@@ -12,9 +12,12 @@ module.exports = function(wagner) {
 
   var Student =
     mongoose.model('Student', require('./student'), 'students');
+  var Attendance =
+    mongoose.model('Attendance', require('./attendance'), 'attendances');
 
   var models = {
-      Student: Student
+      Student: Student,
+      Attendance: Attendance
   }
 
   _.each(models, function(value, key) {

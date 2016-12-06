@@ -24,7 +24,7 @@ module.exports = function(wagner){
             status(status.NOT_FOUND).
             json({ error: 'Not found' });
         }
-        res.json( { student: student })
+        res.json( { student: student });
       });
     };
   }));
