@@ -1,0 +1,11 @@
+<nav-bar></nav-bar>
+<div class="attendance-sheet">
+  <div ng-repeat="student in students">
+    <p class="col-md-4">
+      {{student.lastName}}, {{student.firstName}}
+      <button type="button" class="btn btn-primary">Present</button>
+      <button type="button" class="btn btn-primary">Absent</button>
+      <button type="button" class="btn btn-primary">Tardy</button>
+    </p>
+  </div>
+</div>
