@@ -80,7 +80,6 @@ exports.AttendanceSheetController = function($scope, $http) {
     }).
     error(setupNewAttendance);
   // Get a list of all recorded attendance dates
-  //TODO: work on adding the unrecorded date to list
   $http.
     get('/api/v1/attendance/all').
     success( function(data){
@@ -130,7 +129,7 @@ exports.AttendanceSheetController = function($scope, $http) {
       $scope.saved = false;
       $scope.error = false;
   };
-
+  // Function that initializes an unrecorded date
   function setupNewAttendance(){
     $scope.attendance = {
       attendanceDate: utc,
@@ -341,16 +340,34 @@ exports.AccountManagerController = function($scope, $http, $location, AuthServic
   }, 0);
 };
 
-exports.RegisterUserController = function($scope, $location, AuthService) {
+exports.RegisterUserController = function($scope, $location, AuthService, $http) {
 
   $scope.roles = ['user', 'admin'];
   $scope.chosenRole = 'user';
   $scope.register = function () {
-
+      $scope.newUser = {
+        username: $scope.registerForm.username,
+        password: $scope.registerForm.password,
+        role: $scope.chosenRole,
+        firstName: $scope.registerForm.firstName,
+        lastName: $scope.registerForm.lastName
+      }
       // initial values
       $scope.error = false;
       $scope.disabled = true;
-
+      /*
+      $http.post('/user/register', $scope.newUser)
+        // handle success
+        .success(function (data, status) {
+          $location.path('/account_manager');
+        })
+        // handle error
+        .error(function (data) {
+          console.log(data.err);
+          $scope.errorMessage = data.err.message || "Something went wrong!";
+          $scope.registerForm = {};
+        });
+      */
       // call register from service
       AuthService.register($scope.registerForm.username, $scope.registerForm.password,
           $scope.chosenRole, $scope.registerForm.firstName, $scope.registerForm.lastName)
