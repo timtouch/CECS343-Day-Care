@@ -76,26 +76,11 @@ exports.AttendanceSheetController = function($scope, $http) {
     success(function(data) {
       $scope.attendance = data.attendance;
       $scope.unrecordedDay = false;
+      console.log("Unrecorded Date");
     }).
-    error( function(data) {
-      $scope.unrecordedDay = true;
-      $scope.attendance.attendanceDate = utc;
-      $http.
-        get('/api/v1/student').
-        success( function(data) {
-          $scope.attendance.students = data.students.map(
-            function (currStudent, index, studentArray){
-              return {
-                firstName: currStudent.firstName,
-                lastName: currStudent.lastName,
-                attendance: 'Absent',
-                notes: ''
-              };
-          });
-        }).
-        error(setErrorMessage);
-  });
+    error(setupNewAttendance);
   // Get a list of all recorded attendance dates
+  //TODO: work on adding the unrecorded date to list
   $http.
     get('/api/v1/attendance/all').
     success( function(data){
@@ -103,6 +88,10 @@ exports.AttendanceSheetController = function($scope, $http) {
         function(currDate, index, dateArray){
           return currDate.attendanceDate.slice(0,10);
         });
+      if ($scope.unrecordedDay){
+        $scope.attendanceDates.push($scope.selectedDate);
+      }
+      $scope.attendanceDates.sort(descendingCompare);
     }).
     error(setErrorMessage);
 
@@ -136,13 +125,50 @@ exports.AttendanceSheetController = function($scope, $http) {
       success(function(data){
         $scope.attendance = data.attendance;
         $scope.unrecordedDay = false;
-      });
-  }
+      }).
+      error(setupNewAttendance);
+      $scope.saved = false;
+      $scope.error = false;
+  };
+
+  function setupNewAttendance(){
+    $scope.attendance = {
+      attendanceDate: utc,
+      students: []
+    }
+    $scope.unrecordedDay = true;
+    $scope.attendance.attendanceDate = utc;
+    $http.
+      get('/api/v1/student').
+      success( function(data) {
+        $scope.attendance.students = data.students.map(
+          function (currStudent, index, studentArray){
+            return {
+              firstName: currStudent.firstName,
+              lastName: currStudent.lastName,
+              attendance: 'Absent',
+              notes: ''
+            };
+        });
+      }).
+      error(setErrorMessage);
+  };
 
   function setErrorMessage(data) {
     $scope.saved = false;
     $scope.error = true;
     $scope.errorMessage =  "Oops, something happened on our side";
+  };
+
+  // Sort descending order utility function
+  function descendingCompare( a, b ){
+    if(a > b){
+      return -1;
+    } else if (a < b) {
+      return 1;
+    }
+    //Otherwise a == b
+    return 0;
   };
 
   setTimeout(function() {
