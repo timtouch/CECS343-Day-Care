@@ -3,7 +3,8 @@ exports.HomepageController = function ($scope) {
   setTimeout(function() {
     $scope.$emit('HomepageController');
   }, 0);
-}
+};
+
 exports.StudentInfoController = function($scope, $routeParams, $http, $mdDialog, $location) {
   var id = $routeParams.id;
 
@@ -56,23 +57,27 @@ exports.NavBarController = function($scope, $location, AuthService) {
 };
 
 exports.AttendanceSheetController = function($scope, $http) {
-  var utc = "2016-12-05"//new Date().toJSON().slice(0,10);
-  $scope.error = "";
-  $scope.message = "";
+  var utc = new Date().toJSON().slice(0,10);
+  $scope.attendanceDates = [];
+  $scope.selectedDate = utc;
+  $scope.saved = false;
+  $scope.error = false;
+  $scope.unrecordedDay =  false; // A flag that indicates if this is an unrecorded day
   $scope.enumAttendance = ['Present', 'Absent', 'Tardy'];
 
   $scope.attendance = {
     attendanceDate: utc,
     students: []
   }
-  //If the attendace exists in the DB, show it, otherwise initialize/populate a new attendance sheet
+  //If the attendance exists in the DB, show it, otherwise initialize/populate a new attendance sheet
   $http.
-    get('/api/v1/attendance/' + utc).
+    get('/api/v1/attendance/date/' + utc).
     success(function(data) {
       $scope.attendance = data.attendance;
+      $scope.unrecordedDay = false;
     }).
     error( function(data) {
-      $scope.error = data.error;
+      $scope.unrecordedDay = true;
       $scope.attendance.attendanceDate = utc;
       $http.
         get('/api/v1/student').
@@ -86,24 +91,58 @@ exports.AttendanceSheetController = function($scope, $http) {
                 notes: ''
               };
           });
-        });
-    });
-
-  $scope.saveAttendance = function(){
-    $http.
-      post('/api/v1/attendance/', $scope.attendance).
-      success(function(data){
-        console.log("Successfully added" + data);
-        $scope.message = "Saved Successfully";
-    });
-  };
-  /*
+        }).
+        error(setErrorMessage);
+  });
+  // Get a list of all recorded attendance dates
   $http.
-    get('/api/v1/student').
-    success(function(data) {
-      $scope.students = data.students;
-    });
-  */
+    get('/api/v1/attendance/all').
+    success( function(data){
+      $scope.attendanceDates = data.attendanceDates.map(
+        function(currDate, index, dateArray){
+          return currDate.attendanceDate.slice(0,10);
+        });
+    }).
+    error(setErrorMessage);
+
+  // POST if date was unrecorded previously, PUT to update otherwise
+  $scope.saveAttendance = function(){
+    if ($scope.unrecordedDay) {
+      $http.
+        post('/api/v1/attendance', $scope.attendance).
+        success(function(data){
+          console.log("Successfully added " + data);
+          $scope.message = "Saved Successfully";
+          $scope.saved = true;
+          $scope.unrecordedDay = false;
+        }).
+        error(setErrorMessage);
+    } else {
+      $http.
+        put('/api/v1/attendance', $scope.attendance).
+        success(function(data) {
+          console.log("Successfully updated " + data);
+          $scope.message = "Updated Successfully";
+          $scope.saved = true;
+        }).
+        error(setErrorMessage);
+    }
+  };
+  //Get the attendance information for the selected date
+  $scope.getAttendance = function(){
+    $http.
+      get('/api/v1/attendance/date/' + $scope.selectedDate).
+      success(function(data){
+        $scope.attendance = data.attendance;
+        $scope.unrecordedDay = false;
+      });
+  }
+
+  function setErrorMessage(data) {
+    $scope.saved = false;
+    $scope.error = true;
+    $scope.errorMessage =  "Oops, something happened on our side";
+  };
 
   setTimeout(function() {
     $scope.$emit('AttendanceSheetController');

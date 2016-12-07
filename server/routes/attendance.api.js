@@ -11,13 +11,13 @@ module.exports = function(wagner){
   // HANDLES ATTENDANCE API CALLS
   //======================================================================
   // Get attendance of class given a date in format 'yyyy-mm-dd'
-  api.get('/attendance/:date', wagner.invoke(function(Attendance){
+  api.get('/attendance/date/:date', wagner.invoke(function(Attendance){
     return function(req, res) {
       Attendance.findOne( { attendanceDate: req.params.date }, function (err, attendance){
         if (err) {
           return res.
             status(status.INTERNAL_SERVER_ERROR).
-            json({ error: error.toString() });
+            json({ error: err.toString() });
         }
         if (!attendance) {
           return res.
@@ -25,6 +25,25 @@ module.exports = function(wagner){
             json({ error: 'Not found' });
         }
         res.json( { attendance: attendance });
+      });
+    };
+  }));
+
+  //Get all recorded attendance dates
+  api.get('/attendance/all', wagner.invoke(function(Attendance){
+    return function(req, res) {
+      Attendance.find( {}, { attendanceDate: 1 }, function(err, attendanceDates){
+        if(err){
+          return res.
+            status(status.INTERNAL_SERVER_ERROR).
+            json({ error: err.toString() });
+        }
+        if(!attendanceDates){
+          return res.
+            status(status.NOT_FOUND).
+            json({ error: 'None found' });
+        }
+        res.json({ attendanceDates: attendanceDates });
       });
     };
   }));

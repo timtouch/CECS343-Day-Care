@@ -1,6 +1,17 @@
 <nav-bar></nav-bar>
 <div class="attendance-sheet">
-  <p>{{error}}</p>
+  <div class="col-md-6">
+    <div class="input-group">
+      <select class="form-control" ng-model="selectedDate" required>
+        <option ng-repeat="date in attendanceDates" value="{{date}}">{{date}}</option>
+      </select>
+      <span class="input-group-btn">
+        <button class="btn btn-default" type="button" ng-click="getAttendance()">Go!</button>
+      </span>
+    </div>
+  </div>
+  <div ng-show="saved" class="alert alert-success">{{message}}</div>
+  <div ng-show="error" class="alert alert-danger">{{errorMessage}}</div>
   <form class="form" ng-submit="saveAttendance()">
     <table class="table">
       <thead>
@@ -21,7 +32,7 @@
             </select>
           </td>
           <td>
-            <input type="text" class="form-control" name="note" ng-model="student.notes">
+            <input type="text" class="form-control" name="note" ng-model="student.notes"n>
           </td>
         </tr>
       </tbody>
