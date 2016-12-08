@@ -12,6 +12,7 @@ var session = require('express-session');
 // process.env.PORT lets the port be set by Heroku
 var port = process.env.PORT || 3000;
 
+// Expose Schema/Models
 require('./models/models')(wagner);
 
 // user schema/model

@@ -1,3 +1,6 @@
+//=====================================================================================
+// CONTROLLERS FOR EACH PAGE
+//=====================================================================================
 exports.HomepageController = function ($scope) {
 
   setTimeout(function() {
@@ -8,7 +11,7 @@ exports.HomepageController = function ($scope) {
 exports.StudentInfoController = function($scope, $routeParams, $http, $mdDialog, $location) {
   var id = $routeParams.id;
 
-  //Make api request with info
+  //Get info of selected student
   $http.
     get('/api/v1/student/' + id).
     success(function(data) {
@@ -227,6 +230,18 @@ exports.NewStudentController = function($scope, $http, $location) {
   $scope.removeOption = function(option){
     option.pop();
   }
+  // TODO: Dynamically expanding text boxes
+  $scope.printWhenChanged = function(array, index){
+    if (array[index] == '') {
+      if (array.length > 1) {
+        $scope.removeOption(array);
+      }
+      console.log("It's empty")
+    } else {
+      $scope.addOption(array);
+      console.log("Looks what's inside: " + array[index]);
+    }
+  }
 
   //Adds student to database
   $scope.addStudent = function() {
@@ -267,15 +282,8 @@ exports.EditStudentController = function($scope, $routeParams, $http, $location)
       $scope.student = data.student;
   });
 
-  $scope.addOption = function(option) {
-    option.push('');
-  };
-
-  $scope.removeOption = function(option){
-    option.pop();
-  };
-
   $scope.updateStudent = function() {
+    console.log($scope.editStudent.$valid);
     $http.
       put('/api/v1/student', $scope.student).
       success(function(student){
@@ -283,6 +291,14 @@ exports.EditStudentController = function($scope, $routeParams, $http, $location)
     });
 
     $location.url('/students');
+  };
+
+  $scope.addOption = function(option) {
+    option.push('');
+  };
+
+  $scope.removeOption = function(option){
+    option.pop();
   };
 
   setTimeout(function() {
@@ -354,19 +370,6 @@ exports.RegisterUserController = function($scope, $location, AuthService, $http)
       // initial values
       $scope.error = false;
       $scope.disabled = true;
-      /*
-      $http.post('/user/register', $scope.newUser)
-        // handle success
-        .success(function (data, status) {
-          $location.path('/account_manager');
-        })
-        // handle error
-        .error(function (data) {
-          console.log(data.err);
-          $scope.errorMessage = data.err.message || "Something went wrong!";
-          $scope.registerForm = {};
-        });
-      */
       // call register from service
       AuthService.register($scope.registerForm.username, $scope.registerForm.password,
           $scope.chosenRole, $scope.registerForm.firstName, $scope.registerForm.lastName)
@@ -403,7 +406,7 @@ exports.UserProfileController = function($scope, $http, $routeParams, $mdDialog,
       $scope.chosenRole = $scope.user.role;
   });
 
-
+  // Modal pop up to confirm delete of user
   $scope.showConfirm = function(ev) {
     var confirm = $mdDialog.confirm()
       .title('Do you want to DELETE this user?')
@@ -418,7 +421,6 @@ exports.UserProfileController = function($scope, $http, $routeParams, $mdDialog,
         $http.
           delete('/user/' +  username).
           success(function(data) {
-            console.log(data);
           });
         $location.url('/account_manager');
       }, function() {});
@@ -429,7 +431,6 @@ exports.UserProfileController = function($scope, $http, $routeParams, $mdDialog,
   };
 
   $scope.updateUser = function(){
-    console.log($scope.user);
     $scope.user.role = $scope.chosenRole;
     $http.
       put('/user/edit_user/' + username, $scope.user).

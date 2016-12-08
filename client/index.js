@@ -12,7 +12,7 @@ _.each(directives, function(directive, name) {
   components.directive(name, directive);
 });
 
-var app = angular.module('day-care', ['day-care.components', 'ngRoute', 'ngMaterial']);
+var app = angular.module('day-care', ['day-care.components', 'ngRoute', 'ngMaterial', 'ngMessages']);
 
 //Handles the client side routing
 app.config(function($routeProvider) {
