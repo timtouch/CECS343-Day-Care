@@ -1,4 +1,7 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+//=====================================================================================
+// CONTROLLERS FOR EACH PAGE
+//=====================================================================================
 exports.HomepageController = function ($scope) {
 
   setTimeout(function() {
@@ -9,7 +12,7 @@ exports.HomepageController = function ($scope) {
 exports.StudentInfoController = function($scope, $routeParams, $http, $mdDialog, $location) {
   var id = $routeParams.id;
 
-  //Make api request with info
+  //Get info of selected student
   $http.
     get('/api/v1/student/' + id).
     success(function(data) {
@@ -80,7 +83,6 @@ exports.AttendanceSheetController = function($scope, $http) {
     }).
     error(setupNewAttendance);
   // Get a list of all recorded attendance dates
-  //TODO: work on adding the unrecorded date to list
   $http.
     get('/api/v1/attendance/all').
     success( function(data){
@@ -130,7 +132,7 @@ exports.AttendanceSheetController = function($scope, $http) {
       $scope.saved = false;
       $scope.error = false;
   };
-
+  // Function that initializes an unrecorded date
   function setupNewAttendance(){
     $scope.attendance = {
       attendanceDate: utc,
@@ -227,7 +229,9 @@ exports.NewStudentController = function($scope, $http, $location) {
   }
 
   $scope.removeOption = function(option){
-    option.pop();
+    if(option.length > 1){
+      option.pop();
+    }
   }
 
   //Adds student to database
@@ -269,15 +273,8 @@ exports.EditStudentController = function($scope, $routeParams, $http, $location)
       $scope.student = data.student;
   });
 
-  $scope.addOption = function(option) {
-    option.push('');
-  };
-
-  $scope.removeOption = function(option){
-    option.pop();
-  };
-
   $scope.updateStudent = function() {
+    console.log($scope.editStudent.$valid);
     $http.
       put('/api/v1/student', $scope.student).
       success(function(student){
@@ -285,6 +282,16 @@ exports.EditStudentController = function($scope, $routeParams, $http, $location)
     });
 
     $location.url('/students');
+  };
+
+  $scope.addOption = function(option) {
+    option.push('');
+  };
+
+  $scope.removeOption = function(option){
+    if(option.length > 1){
+      option.pop();
+    }
   };
 
   setTimeout(function() {
@@ -341,16 +348,21 @@ exports.AccountManagerController = function($scope, $http, $location, AuthServic
   }, 0);
 };
 
-exports.RegisterUserController = function($scope, $location, AuthService) {
+exports.RegisterUserController = function($scope, $location, AuthService, $http) {
 
   $scope.roles = ['user', 'admin'];
   $scope.chosenRole = 'user';
   $scope.register = function () {
-
+      $scope.newUser = {
+        username: $scope.registerForm.username,
+        password: $scope.registerForm.password,
+        role: $scope.chosenRole,
+        firstName: $scope.registerForm.firstName,
+        lastName: $scope.registerForm.lastName
+      }
       // initial values
       $scope.error = false;
       $scope.disabled = true;
-
       // call register from service
       AuthService.register($scope.registerForm.username, $scope.registerForm.password,
           $scope.chosenRole, $scope.registerForm.firstName, $scope.registerForm.lastName)
@@ -387,7 +399,7 @@ exports.UserProfileController = function($scope, $http, $routeParams, $mdDialog,
       $scope.chosenRole = $scope.user.role;
   });
 
-
+  // Modal pop up to confirm delete of user
   $scope.showConfirm = function(ev) {
     var confirm = $mdDialog.confirm()
       .title('Do you want to DELETE this user?')
@@ -402,7 +414,6 @@ exports.UserProfileController = function($scope, $http, $routeParams, $mdDialog,
         $http.
           delete('/user/' +  username).
           success(function(data) {
-            console.log(data);
           });
         $location.url('/account_manager');
       }, function() {});
@@ -413,7 +424,6 @@ exports.UserProfileController = function($scope, $http, $routeParams, $mdDialog,
   };
 
   $scope.updateUser = function(){
-    console.log($scope.user);
     $scope.user.role = $scope.chosenRole;
     $http.
       put('/user/edit_user/' + username, $scope.user).
@@ -527,7 +537,7 @@ _.each(directives, function(directive, name) {
   components.directive(name, directive);
 });
 
-var app = angular.module('day-care', ['day-care.components', 'ngRoute', 'ngMaterial']);
+var app = angular.module('day-care', ['day-care.components', 'ngRoute', 'ngMaterial', 'ngMessages']);
 
 //Handles the client side routing
 app.config(function($routeProvider) {
@@ -535,42 +545,42 @@ app.config(function($routeProvider) {
     when('/', {
       templateUrl: '/templates/homepage.html',
       controller: 'HomepageController',
-      access: { restricted: false }
+      access: { restricted: false, admin: false }
     }).
     when('/login',{
       templateUrl:'/templates/login.html',
       controller: 'LoginController',
-      access: { restricted: false }
+      access: { restricted: false, admin: false }
     }).
     when('/student/:id', {
       templateUrl: '/templates/student_info.html',
       controller: 'StudentInfoController',
-      access: { restricted: true }
+      access: { restricted: true, admin: false }
     }).
     when('/attendance_sheet', {
       templateUrl: '/templates/attendance_sheet.html',
       controller: 'AttendanceSheetController',
-      access: { restricted: true }
+      access: { restricted: true, admin: false }
     }).
     when('/students', {
       templateUrl: '/templates/students.html',
       controller: 'StudentsController',
-      access: { restricted: true }
+      access: { restricted: true, admin: false }
     }).
     when('/pickup_dropoff', {
       templateUrl: '/templates/pickup_dropoff.html',
       controller: 'PickupDropoffController',
-      access: { restricted: true }
+      access: { restricted: true, admin: false }
     }).
     when('/new_student', {
       templateUrl: '/templates/new_student.html',
       controller: 'NewStudentController',
-      access: { restricted: true }
+      access: { restricted: true, admin: false }
     }).
     when('/edit_student/:id', {
       templateUrl: '/templates/edit_student.html',
       controller: 'EditStudentController',
-      access: { restricted: true }
+      access: { restricted: true, admin: false }
     }).
     when('/account_manager', {
       templateUrl: '/templates/account_manager.html',
@@ -589,7 +599,7 @@ app.config(function($routeProvider) {
     }).
     otherwise({
       redirectTo: '/',
-      access: { restricted: false }
+      access: { restricted: false, admin: false }
     });
 });
 

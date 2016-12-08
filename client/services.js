@@ -127,7 +127,6 @@ angular.module('day-care').factory('AuthService',
         })
         // handle error
         .error(function (data) {
-          console.log(data.err);
           deferred.reject(data.err);
         });
       // return promise object

@@ -1,3 +1,6 @@
+//=====================================================================================
+// CONTROLLERS FOR EACH PAGE
+//=====================================================================================
 exports.HomepageController = function ($scope) {
 
   setTimeout(function() {
@@ -8,7 +11,7 @@ exports.HomepageController = function ($scope) {
 exports.StudentInfoController = function($scope, $routeParams, $http, $mdDialog, $location) {
   var id = $routeParams.id;
 
-  //Make api request with info
+  //Get info of selected student
   $http.
     get('/api/v1/student/' + id).
     success(function(data) {
@@ -79,7 +82,6 @@ exports.AttendanceSheetController = function($scope, $http) {
     }).
     error(setupNewAttendance);
   // Get a list of all recorded attendance dates
-  //TODO: work on adding the unrecorded date to list
   $http.
     get('/api/v1/attendance/all').
     success( function(data){
@@ -129,7 +131,7 @@ exports.AttendanceSheetController = function($scope, $http) {
       $scope.saved = false;
       $scope.error = false;
   };
-
+  // Function that initializes an unrecorded date
   function setupNewAttendance(){
     $scope.attendance = {
       attendanceDate: utc,
@@ -226,7 +228,9 @@ exports.NewStudentController = function($scope, $http, $location) {
   }
 
   $scope.removeOption = function(option){
-    option.pop();
+    if(option.length > 1){
+      option.pop();
+    }
   }
 
   //Adds student to database
@@ -268,15 +272,8 @@ exports.EditStudentController = function($scope, $routeParams, $http, $location)
       $scope.student = data.student;
   });
 
-  $scope.addOption = function(option) {
-    option.push('');
-  };
-
-  $scope.removeOption = function(option){
-    option.pop();
-  };
-
   $scope.updateStudent = function() {
+    console.log($scope.editStudent.$valid);
     $http.
       put('/api/v1/student', $scope.student).
       success(function(student){
@@ -284,6 +281,16 @@ exports.EditStudentController = function($scope, $routeParams, $http, $location)
     });
 
     $location.url('/students');
+  };
+
+  $scope.addOption = function(option) {
+    option.push('');
+  };
+
+  $scope.removeOption = function(option){
+    if(option.length > 1){
+      option.pop();
+    }
   };
 
   setTimeout(function() {
@@ -340,16 +347,21 @@ exports.AccountManagerController = function($scope, $http, $location, AuthServic
   }, 0);
 };
 
-exports.RegisterUserController = function($scope, $location, AuthService) {
+exports.RegisterUserController = function($scope, $location, AuthService, $http) {
 
   $scope.roles = ['user', 'admin'];
   $scope.chosenRole = 'user';
   $scope.register = function () {
-
+      $scope.newUser = {
+        username: $scope.registerForm.username,
+        password: $scope.registerForm.password,
+        role: $scope.chosenRole,
+        firstName: $scope.registerForm.firstName,
+        lastName: $scope.registerForm.lastName
+      }
       // initial values
       $scope.error = false;
       $scope.disabled = true;
-
       // call register from service
       AuthService.register($scope.registerForm.username, $scope.registerForm.password,
           $scope.chosenRole, $scope.registerForm.firstName, $scope.registerForm.lastName)
@@ -386,7 +398,7 @@ exports.UserProfileController = function($scope, $http, $routeParams, $mdDialog,
       $scope.chosenRole = $scope.user.role;
   });
 
-
+  // Modal pop up to confirm delete of user
   $scope.showConfirm = function(ev) {
     var confirm = $mdDialog.confirm()
       .title('Do you want to DELETE this user?')
@@ -401,7 +413,6 @@ exports.UserProfileController = function($scope, $http, $routeParams, $mdDialog,
         $http.
           delete('/user/' +  username).
           success(function(data) {
-            console.log(data);
           });
         $location.url('/account_manager');
       }, function() {});
@@ -412,7 +423,6 @@ exports.UserProfileController = function($scope, $http, $routeParams, $mdDialog,
   };
 
   $scope.updateUser = function(){
-    console.log($scope.user);
     $scope.user.role = $scope.chosenRole;
     $http.
       put('/user/edit_user/' + username, $scope.user).
