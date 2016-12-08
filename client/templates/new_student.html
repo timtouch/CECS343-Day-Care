@@ -15,8 +15,10 @@
       <label for="medicalInfo">Medical Information</label>
       <!--Consider a mechanism to automatically increase field as they are filled-->
       <div ng-repeat='foodAllergy in foodAllergies track by $index'>
-        <input type="text" class="form-control" placeholder="Food Allergy" ng-change="printWhenChanged(foodAllergies, $index)" ng-model="foodAllergies[$index]"/>
+        <input type="text" class="form-control" placeholder="Food Allergy" ng-model="foodAllergies[$index]"/>
       </div>
+      <button type='button' class='addField' ng-click="addOption(foodAllergies)">+</button>
+      <button type='button' class='removeField' ng-click="removeOption(foodAllergies)">-</button>
 
       <div ng-repeat='medicalAllergy in medicalAllergies track by $index'>
         <input type="text" class="form-control" placeholder="Medical Allergy" ng-model="medicalAllergies[$index]"/>

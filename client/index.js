@@ -20,42 +20,42 @@ app.config(function($routeProvider) {
     when('/', {
       templateUrl: '/templates/homepage.html',
       controller: 'HomepageController',
-      access: { restricted: false }
+      access: { restricted: false, admin: false }
     }).
     when('/login',{
       templateUrl:'/templates/login.html',
       controller: 'LoginController',
-      access: { restricted: false }
+      access: { restricted: false, admin: false }
     }).
     when('/student/:id', {
       templateUrl: '/templates/student_info.html',
       controller: 'StudentInfoController',
-      access: { restricted: true }
+      access: { restricted: true, admin: false }
     }).
     when('/attendance_sheet', {
       templateUrl: '/templates/attendance_sheet.html',
       controller: 'AttendanceSheetController',
-      access: { restricted: true }
+      access: { restricted: true, admin: false }
     }).
     when('/students', {
       templateUrl: '/templates/students.html',
       controller: 'StudentsController',
-      access: { restricted: true }
+      access: { restricted: true, admin: false }
     }).
     when('/pickup_dropoff', {
       templateUrl: '/templates/pickup_dropoff.html',
       controller: 'PickupDropoffController',
-      access: { restricted: true }
+      access: { restricted: true, admin: false }
     }).
     when('/new_student', {
       templateUrl: '/templates/new_student.html',
       controller: 'NewStudentController',
-      access: { restricted: true }
+      access: { restricted: true, admin: false }
     }).
     when('/edit_student/:id', {
       templateUrl: '/templates/edit_student.html',
       controller: 'EditStudentController',
-      access: { restricted: true }
+      access: { restricted: true, admin: false }
     }).
     when('/account_manager', {
       templateUrl: '/templates/account_manager.html',
@@ -74,7 +74,7 @@ app.config(function($routeProvider) {
     }).
     otherwise({
       redirectTo: '/',
-      access: { restricted: false }
+      access: { restricted: false, admin: false }
     });
 });
 

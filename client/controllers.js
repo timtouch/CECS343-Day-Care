@@ -228,18 +228,8 @@ exports.NewStudentController = function($scope, $http, $location) {
   }
 
   $scope.removeOption = function(option){
-    option.pop();
-  }
-  // TODO: Dynamically expanding text boxes
-  $scope.printWhenChanged = function(array, index){
-    if (array[index] == '') {
-      if (array.length > 1) {
-        $scope.removeOption(array);
-      }
-      console.log("It's empty")
-    } else {
-      $scope.addOption(array);
-      console.log("Looks what's inside: " + array[index]);
+    if(option.length > 1){
+      option.pop();
     }
   }
 
@@ -298,7 +288,9 @@ exports.EditStudentController = function($scope, $routeParams, $http, $location)
   };
 
   $scope.removeOption = function(option){
-    option.pop();
+    if(option.length > 1){
+      option.pop();
+    }
   };
 
   setTimeout(function() {

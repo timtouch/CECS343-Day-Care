@@ -48,7 +48,7 @@ module.exports = function(wagner){
     };
   }));
 
-  //Allow users to add new students
+  // Allow users to add new students
   api.post('/student', wagner.invoke(function(Student){
     return function (req, res, next) {
 
@@ -59,7 +59,7 @@ module.exports = function(wagner){
       });
     };
   }));
-  //Update student information
+  // Update student information
   api.put('/student', wagner.invoke(function(Student){
     return function (req, res, next) {
       var student = req.body;
@@ -69,7 +69,7 @@ module.exports = function(wagner){
       });
     };
   }));
-
+  // Delete student of a given _id
   api.delete('/student/:id', wagner.invoke(function(Student){
     return function (req, res, next) {
       Student.remove( { _id: req.params.id } , function(err){
