@@ -16,6 +16,7 @@ angular.module('day-care').factory('AuthService',
       register: register
     });
 
+    //checks if user is logged in
     function isLoggedIn() {
       if(user) {
         return true;
@@ -24,6 +25,7 @@ angular.module('day-care').factory('AuthService',
       }
     }
 
+    //verifies if user is an admin 
     function isAdmin(){
       if(role === 'admin') {
         return true;
@@ -50,8 +52,8 @@ angular.module('day-care').factory('AuthService',
       });
     }
 
+    //logs in user with the given credentials
     function login(username, password) {
-
       // create a new instance of deferred
       var deferred = $q.defer();
 
@@ -82,8 +84,8 @@ angular.module('day-care').factory('AuthService',
 
     }
 
+    //logs user out of the system
     function logout() {
-
       // create a new instance of deferred
       var deferred = $q.defer();
 
@@ -107,8 +109,8 @@ angular.module('day-care').factory('AuthService',
 
     }
 
+    //registers a new user
     function register(username, password, role, firstName, lastName) {
-
       // create a new instance of deferred
       var deferred = $q.defer();
 
