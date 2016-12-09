@@ -1,5 +1,6 @@
 <nav-bar></nav-bar>
-<div class="students">
+<div class="students inner-container">
+  <label>Search: <input ng-model="searchText"></label>
   <table class="table">
     <thead>
       <tr>
@@ -12,7 +13,7 @@
         <th>Em. Contact Phone Number</th>
         <th>Relationship</th>
       </tr>
-      <tbody ng-repeat="student in students">
+      <tbody ng-repeat="student in students | filter:searchText">
         <tr ng-click="setSelected(student._id)">
           <td>{{student.lastName}}</a></td>
           <td>{{student.firstName}}</td>

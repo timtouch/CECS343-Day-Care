@@ -1,5 +1,6 @@
 <nav-bar></nav-bar>
-<div class="pickup-dropoff">
+<div class="pickup-dropoff inner-container">
+  <label>Search: <input ng-model="searchText"></label>
   <table class="table">
     <thead>
       <tr>
@@ -13,7 +14,7 @@
         <th>Relationship</th>
       </tr>
     </thead>
-    <tbody ng-repeat="student in students">
+    <tbody ng-repeat="student in students | filter: searchText">
       <td>{{student.lastName}}</td>
       <td>{{student.firstName}}</td>
       <td>{{student.guardians[0].firstName}} {{student.guardians[0].lastName}}</td>

@@ -1,5 +1,6 @@
 <nav-bar></nav-bar>
-<div class="account-manager">
+<div class="account-manager inner-container">
+  <label>Search: <input ng-model="searchText"></label>
   <table class="table">
     <thead>
       <tr>
@@ -9,7 +10,7 @@
         <th>Role</th>
       </tr>
     </thead>
-    <tbody ng-repeat="user in users">
+    <tbody ng-repeat="user in users | filter: searchText">
       <tr ng-click="setSelected(user.username)">
         <td>{{user.lastName}}</td>
         <td>{{user.firstName}}</td>

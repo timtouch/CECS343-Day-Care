@@ -1,13 +1,13 @@
 <nav-bar></nav-bar>
-<div class="attendance-sheet">
+<div class="attendance-sheet inner-container">
   <div class="col-md-6">
     <div class="input-group">
-      <select class="form-control" ng-model="selectedDate" required>
-        <option ng-repeat="date in attendanceDates" value="{{date}}">{{date}}</option>
-      </select>
-      <span class="input-group-btn">
-        <button class="btn btn-default" type="button" ng-click="getAttendance()">Go!</button>
-      </span>
+        <select class="form-control" ng-model="selectedDate" required>
+          <option ng-repeat="date in attendanceDates" value="{{date}}">{{date}}</option>
+        </select>
+        <span class="input-group-btn">
+          <button class="btn btn-default" type="button" ng-click="getAttendance()">Go!</button>
+        </span>
     </div>
   </div>
   <div ng-show="saved" class="alert alert-success">{{message}}</div>
