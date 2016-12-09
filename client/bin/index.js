@@ -437,6 +437,7 @@ exports.UserProfileController = function($scope, $http, $routeParams, $mdDialog,
   }, 0);
 };
 
+  //export homepage
 },{}],2:[function(require,module,exports){
 exports.homepage = function() {
   return {
@@ -445,6 +446,7 @@ exports.homepage = function() {
   }
 };
 
+  //export student info
 exports.studentInfo = function() {
   return {
     controller: "StudentInfoController",
@@ -452,6 +454,7 @@ exports.studentInfo = function() {
   }
 };
 
+  //export navigation bar
 exports.navBar = function() {
   return {
     controller: "NavBarController",
@@ -459,6 +462,7 @@ exports.navBar = function() {
   }
 };
 
+  //export attendance sheet
 exports.attendanceSheet = function() {
   return {
     controller: "AttendanceSheetController",
@@ -466,6 +470,7 @@ exports.attendanceSheet = function() {
   }
 };
 
+  //export student roster
 exports.students = function() {
   return {
     controller: "StudentsController",
@@ -473,6 +478,7 @@ exports.students = function() {
   }
 };
 
+  //export pickup and dropoff list
 exports.pickupDropoff = function() {
   return {
     controller: "PickupDropoffController",
@@ -480,6 +486,7 @@ exports.pickupDropoff = function() {
   }
 };
 
+  //export new student creator
 exports.newStudent = function() {
   return {
     controller: "NewStudentController",
@@ -487,6 +494,7 @@ exports.newStudent = function() {
   }
 };
 
+  //export student editor
 exports.editStudent = function() {
   return {
     controller: "EditStudentController",
@@ -494,6 +502,7 @@ exports.editStudent = function() {
   }
 };
 
+  //export user login page
 exports.login = function() {
   return {
     controller: "LoginController",
@@ -501,6 +510,8 @@ exports.login = function() {
   }
 };
 
+  //export account manager
+  //accessible only through administrative accounts
 exports.accountManager = function() {
   return {
     controller: "AccountManagerController",
@@ -508,6 +519,8 @@ exports.accountManager = function() {
   }
 };
 
+  //export user creator
+  //accssible only through administrative accounts
 exports.registerUser = function() {
   return {
     controller: "RegisterUserController",
@@ -515,6 +528,7 @@ exports.registerUser = function() {
   }
 };
 
+  //export user editor
 exports.userProfile = function() {
   return {
     controller: "UserProfileController",
@@ -1713,7 +1727,6 @@ app.run(function ($rootScope, $location, $route, AuthService) {
     }
     return true;
   };
-
 
   // Internal recursive comparison function for `isEqual`.
   var eq = function(a, b, aStack, bStack) {
