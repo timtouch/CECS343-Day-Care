@@ -6,6 +6,8 @@
 
 ## To set up the server for testing
 1. Install Node JS and Heroku CLI
+ * https://devcenter.heroku.com/articles/heroku-cli
+ * https://nodejs.org/download/release/v4.6.2/
 2. Navigate to root folder of project and run **heroku local web**
 3. Use **localhost:5000** in the browser address to view the test website
 
