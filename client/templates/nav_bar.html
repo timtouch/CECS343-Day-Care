@@ -1,3 +1,6 @@
+<!--This handles the navigation bar tabs-->
+<!--Tabs are shown and hidden depending on whether the user is logged in or not-->
+
 <div class="nav-bar">
   <ul class="nav nav-tabs" ng-init="selectedTab = 'attendanceSheet'">
     <li ng-class="{'active': currentURL === '/attendance_sheet'}" ng-hide="!isLoggedIn" ><a data-toggle="tab" href="#/attendance_sheet">Attendance Sheet</a></li>
