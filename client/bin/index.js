@@ -4,6 +4,7 @@
 //=====================================================================================
 exports.HomepageController = function ($scope) {
 
+  // Used when testing the directives
   setTimeout(function() {
     $scope.$emit('HomepageController');
   }, 0);
@@ -18,6 +19,7 @@ exports.StudentInfoController = function($scope, $routeParams, $http, $mdDialog,
     success(function(data) {
       $scope.student = data.student;
   });
+  // Displays modal pop up to confirm deletion of student
   $scope.showConfirm = function(ev) {
     var confirm = $mdDialog.confirm()
       .title('Do you want to DELETE this student?')
@@ -44,11 +46,13 @@ exports.StudentInfoController = function($scope, $routeParams, $http, $mdDialog,
 };
 
 exports.NavBarController = function($scope, $location, AuthService) {
+  // Used to determine which tab should be active
   $scope.currentURL = $location.url();
-  $scope.isLoggedIn = AuthService.isLoggedIn();
-  $scope.isAdmin = AuthService.isAdmin();
+  // Used to determine which tabs are shown and to whom
+  $scope.isLoggedIn = AuthService.isLoggedIn(); // If true, shows tabs that users are allowed to see
+  $scope.isAdmin = AuthService.isAdmin(); // If true, shows tabs admins are allowed to see
   $scope.logout = function() {
-    //call logout from service
+    //call logout from service to log user out
     AuthService.logout()
     .then(function(){
       $location.path('/login');
@@ -59,15 +63,16 @@ exports.NavBarController = function($scope, $location, AuthService) {
     $scope.$emit('NavBarController');
   }, 0);
 };
-
 exports.AttendanceSheetController = function($scope, $http) {
+  // Gets current date
   var utc = new Date().toJSON().slice(0,10);
+  // A list for the date dropdown
   $scope.attendanceDates = [];
   $scope.selectedDate = utc;
   $scope.saved = false;
   $scope.error = false;
   $scope.unrecordedDay =  false; // A flag that indicates if this is an unrecorded day
-  $scope.enumAttendance = ['Present', 'Absent', 'Tardy'];
+  $scope.enumAttendance = ['Present', 'Absent', 'Tardy']; // Options for a dropdown
 
   $scope.attendance = {
     attendanceDate: utc,
@@ -79,17 +84,18 @@ exports.AttendanceSheetController = function($scope, $http) {
     success(function(data) {
       $scope.attendance = data.attendance;
       $scope.unrecordedDay = false;
-      console.log("Unrecorded Date");
     }).
-    error(setupNewAttendance);
+    error(setupNewAttendance); // The error indicates that the day has never been saved so setup for the new day
   // Get a list of all recorded attendance dates
   $http.
     get('/api/v1/attendance/all').
     success( function(data){
+      // Fill the dates dropdown with all attendance dates recorded
       $scope.attendanceDates = data.attendanceDates.map(
         function(currDate, index, dateArray){
           return currDate.attendanceDate.slice(0,10);
         });
+      // If the current day was not recorded yet, add it to the dropdown
       if ($scope.unrecordedDay){
         $scope.attendanceDates.push($scope.selectedDate);
       }
@@ -103,9 +109,8 @@ exports.AttendanceSheetController = function($scope, $http) {
       $http.
         post('/api/v1/attendance', $scope.attendance).
         success(function(data){
-          console.log("Successfully added " + data);
           $scope.message = "Saved Successfully";
-          $scope.saved = true;
+          $scope.saved = true; //Feedback to user of success
           $scope.unrecordedDay = false;
         }).
         error(setErrorMessage);
@@ -113,9 +118,8 @@ exports.AttendanceSheetController = function($scope, $http) {
       $http.
         put('/api/v1/attendance', $scope.attendance).
         success(function(data) {
-          console.log("Successfully updated " + data);
           $scope.message = "Updated Successfully";
-          $scope.saved = true;
+          $scope.saved = true; //Feedback to user of success
         }).
         error(setErrorMessage);
     }
@@ -132,7 +136,7 @@ exports.AttendanceSheetController = function($scope, $http) {
       $scope.saved = false;
       $scope.error = false;
   };
-  // Function that initializes an unrecorded date
+  // Function that initializes an unrecorded date with students
   function setupNewAttendance(){
     $scope.attendance = {
       attendanceDate: utc,
@@ -143,6 +147,7 @@ exports.AttendanceSheetController = function($scope, $http) {
     $http.
       get('/api/v1/student').
       success( function(data) {
+        // Formats the information associated with each student
         $scope.attendance.students = data.students.map(
           function (currStudent, index, studentArray){
             return {
@@ -155,18 +160,20 @@ exports.AttendanceSheetController = function($scope, $http) {
       }).
       error(setErrorMessage);
   };
-
+  // Displays an error to the user if something went wrong
   function setErrorMessage(data) {
     $scope.saved = false;
     $scope.error = true;
     $scope.errorMessage =  "Oops, something happened on our side";
   };
 
-  // Sort descending order utility function
+  // Sort descending order in array, utility function
   function descendingCompare( a, b ){
     if(a > b){
+      // a before b
       return -1;
     } else if (a < b) {
+      // a after b
       return 1;
     }
     //Otherwise a == b
@@ -180,13 +187,22 @@ exports.AttendanceSheetController = function($scope, $http) {
 };
 
 exports.StudentsController = function ( $scope, $http, $location ) {
-
+  // Get all students from DB
   $http.
     get('/api/v1/student').
     success(function(data) {
-      $scope.students = data.students;
+      // Format student info to be displayed
+      $scope.students = data.students.map(function(currStudent, index, array){
+        return {
+          _id: currStudent._id,
+          firstName: currStudent.firstName,
+          lastName: currStudent.lastName,
+          medicalInfo: currStudent.medicalInfo,
+          emergencyContact: currStudent.emergencyContact
+        }
+      });
     });
-
+  // Redirect to a selected student's profile page
   $scope.setSelected = function(studentID){
     $location.path('/student/' + studentID);
   };
@@ -198,11 +214,19 @@ exports.StudentsController = function ( $scope, $http, $location ) {
 };
 
 exports.PickupDropoffController = function($scope, $http) {
-
+  // Get all students from DB
   $http.
     get('/api/v1/student').
     success(function(data) {
-      $scope.students = data.students;
+      // Maps only the needed student information in the array of students
+      $scope.students = data.students.map(function(currStudent, index, array){
+        return {
+          _id: currStudent._id,
+          firstName: currStudent.firstName,
+          lastName: currStudent.lastName,
+          guardians: currStudent.guardians
+        }
+      });
     });
 
   setTimeout(function() {
@@ -218,31 +242,33 @@ exports.NewStudentController = function($scope, $http, $location) {
     emergencyContact:{},
     guardians: []
   };
-
-
   $scope.guardians = [{},{}];
   $scope.foodAllergies = [''];
   $scope.medicalAllergies = [''];
-
+  // Used in filter function to remove empty array elements
+  var isNotEmptyField = function(value){
+    return value != "";
+  };
+  // Used to add or remove textboxes for food allergies and medical allergies field
   $scope.addOption = function(option) {
     option.push('');
-  }
-
+  };
   $scope.removeOption = function(option){
     if(option.length > 1){
       option.pop();
     }
-  }
+  };
+
 
   //Adds student to database
   $scope.addStudent = function() {
-
+    // Setting values from textboxes to the student object we are going to submit
     $scope.student.firstName = $scope.firstName;
     $scope.student.lastName = $scope.lastName;
     $scope.student.phone = parseInt($scope.phoneNumber);
     $scope.student.status = "Currently Enrolled";
-    $scope.student.medicalInfo.foodAllergies = $scope.foodAllergies;
-    $scope.student.medicalInfo.medicalAllergies = $scope.medicalAllergies;
+    $scope.student.medicalInfo.foodAllergies = $scope.foodAllergies.filter(isNotEmptyField);
+    $scope.student.medicalInfo.medicalAllergies = $scope.medicalAllergies.filter(isNotEmptyField);
     $scope.student.medicalInfo.medicalNeeds = $scope.medicalNeeds;
     $scope.student.medicalInfo.medicalAdminPermission = $scope.medicalAdminPermission;
     $scope.student.emergencyContact.emFirstName = $scope.emFirstName;
@@ -251,6 +277,7 @@ exports.NewStudentController = function($scope, $http, $location) {
     $scope.student.emergencyContact.relationship = $scope.emRelationship;
     $scope.student.guardians = $scope.guardians;
 
+    // Save the new student information and redirect user to students page
     $http.
       post('/api/v1/student', $scope.student).
       success(function(addedStudent){
@@ -267,14 +294,30 @@ exports.NewStudentController = function($scope, $http, $location) {
 
 exports.EditStudentController = function($scope, $routeParams, $http, $location){
   var studentid = $routeParams.id;
+  // Used in filter function to remove empty array elements
+  var isNotEmptyField = function(value){
+    return value != "";
+  };
+  // Get a specific user's information
   $http.
     get('/api/v1/student/' + studentid).
     success(function(data){
       $scope.student = data.student;
+      // used to make sure there are still input textboxes even if array is empty
+      if($scope.student.medicalInfo.foodAllergies.length < 1){
+        $scope.student.medicalInfo.foodAllergies.push("");
+      }
+      if($scope.student.medicalInfo.medicalAllergies.length < 1){
+        $scope.student.medicalInfo.medicalAllergies.push("");
+      }
   });
 
   $scope.updateStudent = function() {
-    console.log($scope.editStudent.$valid);
+    // Filter out the empty fields
+    $scope.student.medicalInfo.foodAllergies.filter(isNotEmptyField);
+    $scope.student.medicalInfo.medicalAllergies.filter(isNotEmptyField);
+
+    // Update the student information to DB
     $http.
       put('/api/v1/student', $scope.student).
       success(function(student){
@@ -284,10 +327,10 @@ exports.EditStudentController = function($scope, $routeParams, $http, $location)
     $location.url('/students');
   };
 
+  // Used to add or remove textboxes for food allergies and medical allergies field
   $scope.addOption = function(option) {
     option.push('');
   };
-
   $scope.removeOption = function(option){
     if(option.length > 1){
       option.pop();
@@ -308,13 +351,13 @@ exports.LoginController = function($scope, $location, AuthService) {
     $scope.disabled = true;
     //call login from service
     AuthService.login($scope.loginForm.username, $scope.loginForm.password)
-      //handle success
+      //handle success, redirects to home page
       .then(function() {
         $location.path('/');
         $scope.disabled = false;
         $scope.loginForm = {};
       })
-      //handle error
+      //handle error, displays error to user
       .catch(function() {
         $scope.error = true;
         $scope.errorMessage = "Invalid username and/or password";
@@ -329,16 +372,16 @@ exports.LoginController = function($scope, $location, AuthService) {
 };
 
 exports.AccountManagerController = function($scope, $http, $location, AuthService) {
-
+  // Get list all users and their info
   $http.get('/user/users').
     success(function(data) {
       $scope.users = data.users;
   });
-
+  // Takes admin to page that registers users
   $scope.addUser = function(){
     $location.path('/register_user');
   };
-
+  // Directs admin to user profile page
   $scope.setSelected = function(username){
     $location.path('/user_profile/' + username);
   };
@@ -349,36 +392,38 @@ exports.AccountManagerController = function($scope, $http, $location, AuthServic
 };
 
 exports.RegisterUserController = function($scope, $location, AuthService, $http) {
-
+  // Sets dropdown options
   $scope.roles = ['user', 'admin'];
-  $scope.chosenRole = 'user';
+  $scope.chosenRole = 'user'; // initial dropdown option
+  // Registers the user
   $scope.register = function () {
-      $scope.newUser = {
-        username: $scope.registerForm.username,
-        password: $scope.registerForm.password,
-        role: $scope.chosenRole,
-        firstName: $scope.registerForm.firstName,
-        lastName: $scope.registerForm.lastName
-      }
-      // initial values
-      $scope.error = false;
-      $scope.disabled = true;
-      // call register from service
-      AuthService.register($scope.registerForm.username, $scope.registerForm.password,
-          $scope.chosenRole, $scope.registerForm.firstName, $scope.registerForm.lastName)
-        // handle success
-        .then(function () {
-          $location.path('/account_manager');
-          $scope.disabled = false;
-          $scope.registerForm = {};
-        })
-        // handle error
-        .catch(function (err) {
-          $scope.error = true;
-          $scope.errorMessage = err.message || "Something went wrong!";
-          $scope.disabled = false;
-          $scope.registerForm = {};
-        });
+    // Fill in newUser object with values from input form
+    $scope.newUser = {
+      username: $scope.registerForm.username,
+      password: $scope.registerForm.password,
+      role: $scope.chosenRole,
+      firstName: $scope.registerForm.firstName,
+      lastName: $scope.registerForm.lastName
+    }
+    // initial values
+    $scope.error = false; // true when error occurs
+    $scope.disabled = true; // prevents users from clicking submit button
+    // call register from service
+    AuthService.register($scope.registerForm.username, $scope.registerForm.password,
+        $scope.chosenRole, $scope.registerForm.firstName, $scope.registerForm.lastName)
+      // handle success
+      .then(function () {
+        $location.path('/account_manager');
+        $scope.disabled = false;
+        $scope.registerForm = {};
+      })
+      // handle error
+      .catch(function (err) {
+        $scope.error = true;
+        $scope.errorMessage = err.message || "Something went wrong!";
+        $scope.disabled = false;
+        $scope.registerForm = {};
+      });
 
     };
 
@@ -388,11 +433,12 @@ exports.RegisterUserController = function($scope, $location, AuthService, $http)
 };
 
 exports.UserProfileController = function($scope, $http, $routeParams, $mdDialog, $location){
+  // Uses the route parameter value to determine which user to query for
   var username = $routeParams.username;
   $scope.roles = ['user', 'admin'];
   $scope.user = {};
-  $scope.showEditForm = false;
-
+  $scope.showEditForm = false; // Hides the edit user form
+  // Gets the user information
   $http.get('/user/' +  username).
     success(function(data){
       $scope.user = data.user;
@@ -422,7 +468,7 @@ exports.UserProfileController = function($scope, $http, $routeParams, $mdDialog,
   $scope.editUser = function() {
     $scope.showEditForm = true;
   };
-
+  // Updates the editted user info to the DB
   $scope.updateUser = function(){
     $scope.user.role = $scope.chosenRole;
     $http.
@@ -437,7 +483,6 @@ exports.UserProfileController = function($scope, $http, $routeParams, $mdDialog,
   }, 0);
 };
 
-  //export homepage
 },{}],2:[function(require,module,exports){
 exports.homepage = function() {
   return {
@@ -446,7 +491,6 @@ exports.homepage = function() {
   }
 };
 
-  //export student info
 exports.studentInfo = function() {
   return {
     controller: "StudentInfoController",
@@ -454,7 +498,6 @@ exports.studentInfo = function() {
   }
 };
 
-  //export navigation bar
 exports.navBar = function() {
   return {
     controller: "NavBarController",
@@ -462,7 +505,6 @@ exports.navBar = function() {
   }
 };
 
-  //export attendance sheet
 exports.attendanceSheet = function() {
   return {
     controller: "AttendanceSheetController",
@@ -470,7 +512,6 @@ exports.attendanceSheet = function() {
   }
 };
 
-  //export student roster
 exports.students = function() {
   return {
     controller: "StudentsController",
@@ -478,7 +519,6 @@ exports.students = function() {
   }
 };
 
-  //export pickup and dropoff list
 exports.pickupDropoff = function() {
   return {
     controller: "PickupDropoffController",
@@ -486,7 +526,6 @@ exports.pickupDropoff = function() {
   }
 };
 
-  //export new student creator
 exports.newStudent = function() {
   return {
     controller: "NewStudentController",
@@ -494,7 +533,6 @@ exports.newStudent = function() {
   }
 };
 
-  //export student editor
 exports.editStudent = function() {
   return {
     controller: "EditStudentController",
@@ -502,7 +540,6 @@ exports.editStudent = function() {
   }
 };
 
-  //export user login page
 exports.login = function() {
   return {
     controller: "LoginController",
@@ -510,8 +547,6 @@ exports.login = function() {
   }
 };
 
-  //export account manager
-  //accessible only through administrative accounts
 exports.accountManager = function() {
   return {
     controller: "AccountManagerController",
@@ -519,8 +554,6 @@ exports.accountManager = function() {
   }
 };
 
-  //export user creator
-  //accssible only through administrative accounts
 exports.registerUser = function() {
   return {
     controller: "RegisterUserController",
@@ -528,7 +561,6 @@ exports.registerUser = function() {
   }
 };
 
-  //export user editor
 exports.userProfile = function() {
   return {
     controller: "UserProfileController",
@@ -553,7 +585,7 @@ _.each(directives, function(directive, name) {
 
 var app = angular.module('day-care', ['day-care.components', 'ngRoute', 'ngMaterial', 'ngMessages']);
 
-//Handles the client side routing
+//Handles the client side page routing
 app.config(function($routeProvider) {
   $routeProvider.
     when('/', {
@@ -1727,6 +1759,7 @@ app.run(function ($rootScope, $location, $route, AuthService) {
     }
     return true;
   };
+
 
   // Internal recursive comparison function for `isEqual`.
   var eq = function(a, b, aStack, bStack) {

@@ -14,7 +14,7 @@ _.each(directives, function(directive, name) {
 
 var app = angular.module('day-care', ['day-care.components', 'ngRoute', 'ngMaterial', 'ngMessages']);
 
-//Handles the client side routing
+//Handles the client side page routing
 app.config(function($routeProvider) {
   $routeProvider.
     when('/', {
