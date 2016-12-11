@@ -58,7 +58,6 @@ exports.NavBarController = function($scope, $location, AuthService) {
     $scope.$emit('NavBarController');
   }, 0);
 };
-
 exports.AttendanceSheetController = function($scope, $http) {
   var utc = new Date().toJSON().slice(0,10);
   $scope.attendanceDates = [];
