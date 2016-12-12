@@ -484,6 +484,7 @@ exports.UserProfileController = function($scope, $http, $routeParams, $mdDialog,
 };
 
 },{}],2:[function(require,module,exports){
+// Custom directives for template pages
 exports.homepage = function() {
   return {
     controller: "HomepageController",
@@ -583,9 +584,13 @@ _.each(directives, function(directive, name) {
   components.directive(name, directive);
 });
 
+// Sets up app dependencies
 var app = angular.module('day-care', ['day-care.components', 'ngRoute', 'ngMaterial', 'ngMessages']);
 
-//Handles the client side page routing
+// Handles the client side page routing
+//  templateUrl - file location of template to use
+//  controller - Name of controller attached to page
+//  access - determines who can access the page
 app.config(function($routeProvider) {
   $routeProvider.
     when('/', {
@@ -651,14 +656,18 @@ app.config(function($routeProvider) {
 
 //Checks if user is logged in and redirects to login page if they are not
 app.run(function ($rootScope, $location, $route, AuthService) {
+  // Activates before changing routes
   $rootScope.$on('$routeChangeStart',
     function (event, next, current) {
+      // Calls server to get user login status
       AuthService.getUserStatus()
       .then(function(){
+        // If restricted is true, user has to be logged in to access page
         if (next.access.restricted && !AuthService.isLoggedIn()){
           $location.path('/login');
           $route.reload();
         }
+        // If admin is true, user has to have role of admin to access page
         if (next.access.admin && !AuthService.isAdmin()){
           $location.path('/');
           $route.reload();

@@ -27,6 +27,8 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+// Used to save client session data on server
+// A user's session will last until they close the browser
 app.use(session({
   secret: 'shhitsasecret',
   resave: false,

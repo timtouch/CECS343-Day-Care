@@ -4,6 +4,7 @@
   margin-bottom: 5px;
   margin-left: 20px;
   margin-right: 20px;
+  min-height: 100%;
 }
 
 .form-control {
@@ -14,7 +15,8 @@
   margin-top: 10px;
 }
 
-footer {
+
+.footer {
   position: absolute;
   right: 0;
   bottom: 0;

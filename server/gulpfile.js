@@ -1,6 +1,7 @@
 var gulp = require('gulp');
 var mocha = require('mocha');
 
+// Using gulp watch to automate testing
 gulp.task('test', function(){
   var error = false;
   gulp.
@@ -20,6 +21,7 @@ gulp.task('test', function(){
   });
 });
 
+//Tests when changes to student.api.js are made
 gulp.task('watch', function() {
-  gulp.watch(['./student.js'], ['test']);
+  gulp.watch(['./student.api.js'], ['test']);
 });

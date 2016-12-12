@@ -1,3 +1,4 @@
+// Custom directives for template pages
 exports.homepage = function() {
   return {
     controller: "HomepageController",

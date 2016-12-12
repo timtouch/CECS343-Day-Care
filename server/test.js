@@ -35,7 +35,7 @@ describe('Student API', function() {
   });
 
   it('can load a student by firstName', function(done){
-
+    // Initialize student to be inserted
     var student = new Student(
       {
         firstName: "John",
