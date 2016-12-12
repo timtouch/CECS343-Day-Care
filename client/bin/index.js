@@ -574,17 +574,20 @@ var controllers = require('./controllers');
 var directives = require('./directives');
 var _ = require('underscore');
 
+// Setup app components' dependency injections
 var components = angular.module('day-care.components', ['ng']);
 
+// Adds to the conmponents the list of controllers in ./controllers.js
 _.each(controllers, function(controller, name) {
   components.controller(name, controller);
 });
 
+// Adds to the conmponents the list of directives defined in ./directives.js
 _.each(directives, function(directive, name) {
   components.directive(name, directive);
 });
 
-// Sets up app dependencies
+// Sets up app dependency injections
 var app = angular.module('day-care', ['day-care.components', 'ngRoute', 'ngMaterial', 'ngMessages']);
 
 // Handles the client side page routing
