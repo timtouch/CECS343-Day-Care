@@ -19,9 +19,9 @@ _.each(directives, function(directive, name) {
 var app = angular.module('day-care', ['day-care.components', 'ngRoute', 'ngMaterial', 'ngMessages']);
 
 // Handles the client side page routing
-//  templateUrl - file location of template to use
-//  controller - Name of controller attached to page
-//  access - determines who can access the page
+// templateUrl - file location of template to use
+// controller - Name of controller attached to page
+// access - determines who can access the page
 app.config(function($routeProvider) {
   $routeProvider.
     when('/', {
@@ -85,7 +85,7 @@ app.config(function($routeProvider) {
     });
 });
 
-//Checks if user is logged in and redirects to login page if they are not
+// Checks if user is logged in and redirects to login page if they are not
 app.run(function ($rootScope, $location, $route, AuthService) {
   // Activates before changing routes
   $rootScope.$on('$routeChangeStart',
