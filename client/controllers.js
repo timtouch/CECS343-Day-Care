@@ -1,6 +1,7 @@
 //=====================================================================================
 // CONTROLLERS FOR EACH PAGE
 //=====================================================================================
+
 exports.HomepageController = function ($scope) {
 
   // Used when testing the directives
@@ -209,7 +210,6 @@ exports.StudentsController = function ( $scope, $http, $location ) {
   setTimeout(function() {
     $scope.$emit('StudentsController');
   }, 0);
-
 };
 
 exports.PickupDropoffController = function($scope, $http) {
@@ -231,7 +231,6 @@ exports.PickupDropoffController = function($scope, $http) {
   setTimeout(function() {
     $scope.$emit('PickupDropoffController');
   }, 0);
-
 };
 
 exports.NewStudentController = function($scope, $http, $location) {
@@ -257,7 +256,6 @@ exports.NewStudentController = function($scope, $http, $location) {
       option.pop();
     }
   };
-
 
   //Adds student to database
   $scope.addStudent = function() {
@@ -288,7 +286,6 @@ exports.NewStudentController = function($scope, $http, $location) {
   setTimeout(function() {
     $scope.$emit('AddStudentController');
   }, 0);
-
 };
 
 exports.EditStudentController = function($scope, $routeParams, $http, $location){
@@ -322,7 +319,6 @@ exports.EditStudentController = function($scope, $routeParams, $http, $location)
       success(function(student){
         console.log("Successfully edited" + student);
     });
-
     $location.url('/students');
   };
 
@@ -423,7 +419,6 @@ exports.RegisterUserController = function($scope, $location, AuthService, $http)
         $scope.disabled = false;
         $scope.registerForm = {};
       });
-
     };
 
   setTimeout(function() {
