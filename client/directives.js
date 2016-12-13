@@ -6,6 +6,7 @@ exports.homepage = function() {
   }
 };
 
+// Student info
 exports.studentInfo = function() {
   return {
     controller: "StudentInfoController",
@@ -13,6 +14,7 @@ exports.studentInfo = function() {
   }
 };
 
+// Navigation bar
 exports.navBar = function() {
   return {
     controller: "NavBarController",
@@ -20,6 +22,7 @@ exports.navBar = function() {
   }
 };
 
+// Attendance sheet
 exports.attendanceSheet = function() {
   return {
     controller: "AttendanceSheetController",
@@ -27,6 +30,7 @@ exports.attendanceSheet = function() {
   }
 };
 
+// List of students
 exports.students = function() {
   return {
     controller: "StudentsController",
@@ -34,6 +38,7 @@ exports.students = function() {
   }
 };
 
+// Pickup and dropoff interface
 exports.pickupDropoff = function() {
   return {
     controller: "PickupDropoffController",
@@ -41,6 +46,7 @@ exports.pickupDropoff = function() {
   }
 };
 
+// Student creator
 exports.newStudent = function() {
   return {
     controller: "NewStudentController",
@@ -48,6 +54,7 @@ exports.newStudent = function() {
   }
 };
 
+// Student editor
 exports.editStudent = function() {
   return {
     controller: "EditStudentController",
@@ -55,6 +62,7 @@ exports.editStudent = function() {
   }
 };
 
+// Login page
 exports.login = function() {
   return {
     controller: "LoginController",
@@ -62,6 +70,7 @@ exports.login = function() {
   }
 };
 
+// Account controller
 exports.accountManager = function() {
   return {
     controller: "AccountManagerController",
@@ -69,6 +78,7 @@ exports.accountManager = function() {
   }
 };
 
+// Account creator
 exports.registerUser = function() {
   return {
     controller: "RegisterUserController",
@@ -76,6 +86,7 @@ exports.registerUser = function() {
   }
 };
 
+// Account viewer
 exports.userProfile = function() {
   return {
     controller: "UserProfileController",
