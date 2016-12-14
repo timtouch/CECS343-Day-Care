@@ -1,12 +1,12 @@
+//==============================================================================
+//  THIS IS WHERE WE SETUP OUR SERVER
+//==============================================================================
 var express = require('express');
 var wagner = require('wagner-core');
 var passport = require('passport');
 var localStrategy = require('passport-local').Strategy;
 
 var path = require('path');
-//==============================================================================
-//  THIS IS WHERE WE SETUP OUR SERVER
-//==============================================================================
 var morgan = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
