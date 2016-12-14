@@ -4,6 +4,9 @@ var passport = require('passport');
 var localStrategy = require('passport-local').Strategy;
 
 var path = require('path');
+//==============================================================================
+//  THIS IS WHERE WE SETUP OUR SERVER
+//==============================================================================
 var morgan = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
